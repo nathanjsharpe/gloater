@@ -1,0 +1,2 @@
+class Gloat < ApplicationRecord
+end
