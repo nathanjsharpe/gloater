@@ -10,15 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208032501) do
+ActiveRecord::Schema.define(version: 20161208050212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "token"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_api_tokens_on_token", using: :btree
+    t.index ["user_id"], name: "index_api_tokens_on_user_id", using: :btree
+  end
 
   create_table "gloats", force: :cascade do |t|
     t.string   "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_gloats_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -32,4 +44,5 @@ ActiveRecord::Schema.define(version: 20161208032501) do
     t.datetime "updated_at",      null: false
   end
 
+  add_foreign_key "api_tokens", "users"
 end

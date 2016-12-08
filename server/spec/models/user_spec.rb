@@ -7,6 +7,7 @@ RSpec.describe User, type: :model do
 
   it { should validate_presence_of(:email) }
   it { should have_secure_password }
+  it { should have_many :api_tokens }
 
   it "validates format of email address" do
     invalid_email_addresses = [
