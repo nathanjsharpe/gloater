@@ -7,5 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 if Rails.env.development?
+  users = Fabricate.times(10, :user)
   Fabricate.times(10, :gloat)
 end

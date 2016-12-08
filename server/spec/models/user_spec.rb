@@ -2,9 +2,29 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   it "is valid with valid attributes" do
-    expect(Fabricate.build(:gloat)).to be_valid
+    expect(Fabricate.build(:user)).to be_valid
   end
 
   it { should validate_presence_of(:email) }
   it { should have_secure_password }
+
+  it "validates format of email address" do
+    invalid_email_addresses = [
+      'user',
+      'userexample.com',
+      '@example.com',
+      ' @ ',
+      ' @example.com'
+    ]
+
+    valid_email_addresses = [
+      'user@example.com',
+      'user@example',
+      'user.test@example.com',
+      'user+test@example.com'
+    ]
+
+    invalid_email_addresses.each { |email| expect(Fabricate.build(:user, email: email)).to_not be_valid }
+    valid_email_addresses.each { |email| expect(Fabricate.build(:user, email: email)).to be_valid }
+  end
 end

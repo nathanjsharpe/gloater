@@ -22,7 +22,7 @@ RSpec.describe GloatsController, type: :controller do
 
     let(:gloat) { Fabricate(:gloat) }
 
-    it "returns https success" do
+    it "returns http success" do
       expect(response).to have_http_status(:success)
     end
 

@@ -74,5 +74,10 @@ def body_as_json
 end
 
 def json_str_to_hash(str)
-  JSON.parse(str).with_indifferent_access
+  parsed = JSON.parse(str)
+  if parsed.is_a? Hash
+    parsed.with_indifferent_access
+  else
+    parsed
+  end
 end

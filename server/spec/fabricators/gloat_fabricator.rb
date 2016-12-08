@@ -1,3 +1,3 @@
 Fabricator(:gloat) do
-  content { Faker::ChuckNorris.fact }
+  content { Faker::StarWars.quote.truncate(140) }
 end
