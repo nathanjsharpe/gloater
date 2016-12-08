@@ -1,4 +1,4 @@
 class ApiTokenSerializer < ActiveModel::Serializer
-  attributes :id, :token, :expires_at
+  attributes :token, :expires_at
   has_one :user
 end
