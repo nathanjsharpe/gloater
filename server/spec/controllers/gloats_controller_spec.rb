@@ -9,7 +9,6 @@ RSpec.describe GloatsController, type: :controller do
 
   describe "GET #index" do
     it "returns http success" do
-      gloat = Fabricate(:gloat)
       get :index, params: {}, session: valid_session
       expect(response).to have_http_status(:success)
     end
