@@ -12,19 +12,19 @@ describe('api utility', () => {
 
   describe('.gloats', () => {
     it('appends gloats path to current url', () => {
-      expect(api({ baseUrl }).gloats().toString()).to.equal(`${baseUrl}/gloats`);
+      expect(`${api({ baseUrl }).gloats()}`).to.equal(`${baseUrl}/gloats`);
     });
   });
 
   describe('.gloat', () => {
     it('appends gloat path and id to current url', () => {
-      expect(api({ baseUrl }).gloat(123).toString()).to.equal(`${baseUrl}/gloats/123`);
+      expect(`${api({ baseUrl }).gloat(123)}`).to.equal(`${baseUrl}/gloats/123`);
     });
   });
 
   describe('.users', () => {
     it('appends users path to url', () => {
-      expect(api({ baseUrl }).users()).to.equal(`${baseUrl}/users`);
+      expect(`${api({ baseUrl }).users()}`).to.equal(`${baseUrl}/users`);
     });
   });
 
