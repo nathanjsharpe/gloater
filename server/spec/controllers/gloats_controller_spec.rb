@@ -30,55 +30,80 @@ RSpec.describe GloatsController, type: :controller do
 
   describe "POST #create" do
     def do_request
-      post :create, params: { gloat: gloat_attributes }
+      post :create, params: { gloat: gloat_attributes }, headers: headers
     end
 
-    context "with valid params" do
+    let(:user) { Fabricate(:user_with_token)}
+    let(:auth_token) { user.api_tokens.first.token }
+    let(:headers) { {} }
 
+    context "with valid token" do
+
+      context "with valid params" do
+
+        let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
+        let(:headers) { { "Authorization" => auth_token } }
+
+        it "creates a new Gloat" do
+          expect {
+            do_request
+          }.to change(Gloat, :count).by(1)
+        end
+
+        it "responds with created status" do
+          do_request
+          expect(response).to have_http_status(:created)
+        end
+
+        it "responds with JSON containing gloat" do
+          do_request
+          expect(response.body).to be_valid_json
+          expect(body_as_json).to include({
+            content: gloat_attributes[:content],
+            id: be_kind_of(Integer)
+          })
+        end
+      end
+
+      context "with invalid params" do
+        let (:gloat_attributes) { Fabricate.attributes_for(:gloat, content: "oops" * 50) }
+
+        it "does not save the gloat" do
+          expect {
+            do_request
+          }.to_not change(Gloat, :count)
+        end
+
+        it "responds with status 422 unprocessable entity" do
+          do_request
+          expect(response).to have_http_status(422)
+        end
+
+        it "responds with JSON containing errors" do
+          do_request
+          expect(response.body).to be_valid_json
+          expect(body_as_json).to match({
+            "content": [
+              "is too long (maximum is 140 characters)"
+            ]
+          })
+        end
+      end
+    end
+
+    context "without valid token" do
       let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
 
-      it "creates a new Gloat" do
-        expect {
-          do_request
-        }.to change(Gloat, :count).by(1)
-      end
-
-      it "responds with created status" do
+      it "responds with 401 status" do
         do_request
-        expect(response).to have_http_status(:created)
+        expect(response).to have_http_status(401)
       end
 
-      it "responds with JSON containing gloat" do
-        do_request
-        expect(response.body).to be_valid_json
-        expect(body_as_json).to include({
-          content: gloat_attributes[:content],
-          id: be_kind_of(Integer)
-        })
-      end
-    end
-
-    context "with invalid params" do
-      let (:gloat_attributes) { Fabricate.attributes_for(:gloat, content: "oops" * 50) }
-
-      it "does not save the gloat" do
-        expect {
-          do_request
-        }.to_not change(Gloat, :count)
-      end
-
-      it "responds with status 422 unprocessable entity" do
-        do_request
-        expect(response).to have_http_status(422)
-      end
-
-      it "responds with JSON containing errors" do
+      it "responds with json containing error" do
         do_request
         expect(response.body).to be_valid_json
         expect(body_as_json).to match({
-          "content": [
-            "is too long (maximum is 140 characters)"
-          ]
+          error: "Invalid api token"
         })
       end
     end

@@ -16,3 +16,7 @@ Fabricator(:new_user, from: :user) do
   profession      { Faker::Company.profession }
   company         { Faker::Company.name }
 end
+
+Fabricator(:user_with_token, from: :user) do
+  api_tokens { [ Fabricate(:api_token) ] }
+end
