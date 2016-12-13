@@ -1,3 +1,4 @@
+// allows for easy construction and issuing of api requests
 function api({ baseUrl = process.env.GLOATER_API_URL }) {
   let currentUrl = baseUrl;
 
@@ -7,6 +8,7 @@ function api({ baseUrl = process.env.GLOATER_API_URL }) {
     gloat,
     users,
     user,
+    get: get,
   }
 
   function toString() { return currentUrl; }
@@ -29,6 +31,11 @@ function api({ baseUrl = process.env.GLOATER_API_URL }) {
   function user(username) {
     currentUrl = `${currentUrl}/users/${username}`;
     return this;
+  }
+
+  function get() {
+    return fetch(currentUrl)
+    .then(resp => resp.json());
   }
 }
 

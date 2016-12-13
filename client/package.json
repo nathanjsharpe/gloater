@@ -27,6 +27,7 @@
     "eslint-plugin-jsx-a11y": "2.2.3",
     "eslint-plugin-react": "6.4.1",
     "extract-text-webpack-plugin": "1.0.1",
+    "fetch-mock": "^5.5.0",
     "file-loader": "0.9.0",
     "filesize": "3.3.0",
     "find-cache-dir": "0.1.1",
@@ -43,6 +44,7 @@
     "react-dev-utils": "^0.3.0",
     "recursive-readdir": "2.1.0",
     "rimraf": "2.5.4",
+    "sinon": "^1.17.6",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
@@ -61,7 +63,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "NODE_ENV=test node_modules/mocha/bin/mocha --compilers js:babel-core/register --watch --recursive"
+    "test": "NODE_ENV=test node_modules/mocha/bin/mocha --compilers js:babel-core/register --recursive",
+    "test:watch": "NODE_ENV=test node_modules/mocha/bin/mocha --compilers js:babel-core/register --watch --recursive"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -88,7 +91,12 @@
     "env": {
       "test": {
         "plugins": [
-          [ "babel-plugin-webpack-alias", { "config": "./config/webpack.config.dev.js" } ]
+          [
+            "babel-plugin-webpack-alias",
+            {
+              "config": "./config/webpack.config.dev.js"
+            }
+          ]
         ]
       }
     }

@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import api from 'Util/api';
+import fetchMock from 'fetch-mock';
 
 const baseUrl = 'http://example.com';
 
@@ -37,4 +38,19 @@ describe('api utility', () => {
   it('chains to create more complex urls', () => {
     expect(api({ baseUrl }).user('test_user').gloats().toString()).to.equal(`${baseUrl}/users/test_user/gloats`);
   });
+
+  describe('http methods', () => {
+    afterEach(() => fetchMock.restore());
+
+    it('issues get requests to the constructed url and parses json response', done => {
+      fetchMock.get('*', [{ id: 123, content: 'testing' }]);
+      api({ baseUrl }).gloats().get()
+      .then(resp => {
+        expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
+        expect(resp.length).to.equal(1);
+        done();
+      })
+      .catch(done);
+    });
+  })
 });
