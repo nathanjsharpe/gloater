@@ -2,12 +2,10 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
-  let(:valid_session) { {} }
-
   describe "GET #index" do
     before do
       Fabricate.times(3, :user)
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
     end
 
     it "responds with http success" do
@@ -22,7 +20,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe "GET #show" do
     before do
-      get :show, params: { id: user.id }, session: valid_session
+      get :show, params: { id: user.id }
     end
 
     let(:user) { Fabricate(:user) }
@@ -50,7 +48,7 @@ RSpec.describe UsersController, type: :controller do
 
     context "with valid params" do
       def do_request
-        post :create, params: { user: user_attributes }, session: valid_session
+        post :create, params: { user: user_attributes }
       end
 
       let(:user_attributes) { Fabricate.attributes_for(:new_user) }
@@ -83,7 +81,7 @@ RSpec.describe UsersController, type: :controller do
 
     context "with invalid params" do
       def do_request
-        post :create, params: { user: user_attributes }, session: valid_session
+        post :create, params: { user: user_attributes }
       end
 
       let(:user_attributes) { Fabricate.attributes_for(:new_user, email: '') }
@@ -97,6 +95,17 @@ RSpec.describe UsersController, type: :controller do
       it "returns 422 status" do
         do_request
         expect(response).to have_http_status(422)
+      end
+
+      it "responds with json containing the validation error" do
+        do_request
+        expect(response.body).to be_valid_json
+        expect(body_as_json).to match({
+          email: [
+            "can't be blank",
+            "must be a valid email address"
+          ]
+        })
       end
     end
   end

@@ -1,22 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe GloatsController, type: :controller do
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # GloatsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
-
   describe "GET #index" do
     it "returns http success" do
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET #show" do
     before do
-      get :show, params: { id: gloat.id }, session: valid_session
+      get :show, params: { id: gloat.id }
     end
 
     let(:gloat) { Fabricate(:gloat) }
@@ -36,7 +30,7 @@ RSpec.describe GloatsController, type: :controller do
 
   describe "POST #create" do
     def do_request
-      post :create, params: { gloat: gloat_attributes }, session: valid_session
+      post :create, params: { gloat: gloat_attributes }
     end
 
     context "with valid params" do
@@ -62,20 +56,30 @@ RSpec.describe GloatsController, type: :controller do
           id: be_kind_of(Integer)
         })
       end
-
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved gloat as @gloat" do
-        skip "no validation yet for gloats"
-        post :create, params: {gloat: invalid_attributes}, session: valid_session
-        expect(assigns(:gloat)).to be_a_new(Gloat)
+      let (:gloat_attributes) { Fabricate.attributes_for(:gloat, content: "oops" * 50) }
+
+      it "does not save the gloat" do
+        expect {
+          do_request
+        }.to_not change(Gloat, :count)
       end
 
-      it "re-renders the 'new' template" do
-        skip "no validation yet for gloats"
-        post :create, params: {gloat: invalid_attributes}, session: valid_session
-        expect(response).to render_template("new")
+      it "responds with status 422 unprocessable entity" do
+        do_request
+        expect(response).to have_http_status(422)
+      end
+
+      it "responds with JSON containing errors" do
+        do_request
+        expect(response.body).to be_valid_json
+        expect(body_as_json).to match({
+          "content": [
+            "is too long (maximum is 140 characters)"
+          ]
+        })
       end
     end
   end
@@ -83,46 +87,57 @@ RSpec.describe GloatsController, type: :controller do
   describe "PUT #update" do
     let(:gloat) { Fabricate(:gloat) }
 
-    context "with valid params" do
-      before do
-        put :update, params: { id: gloat.id, gloat: new_attributes }, session: valid_session
-      end
+    def do_request
+      put :update, params: { id: gloat.id, gloat: gloat_attributes }
+    end
 
-      let(:new_attributes) { Fabricate.attributes_for(:gloat) }
+    context "with valid params" do
+      let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
 
       it "responds with success" do
+        do_request
         expect(response).to have_http_status(:success)
       end
 
       it "responds with JSON containing the updated gloat" do
+        do_request
         expect(response.body).to be_valid_json
         expect(body_as_json).to include({
-          content: new_attributes[:content],
+          content: gloat_attributes[:content],
           id: gloat.id
         })
       end
     end
 
     context "with invalid params" do
-      it "assigns the gloat as @gloat" do
-        skip "no gloat validation"
-        gloat = Gloat.create! valid_attributes
-        put :update, params: {id: gloat.to_param, gloat: invalid_attributes}, session: valid_session
-        expect(assigns(:gloat)).to eq(gloat)
+      let (:gloat_attributes) { Fabricate.attributes_for(:gloat, content: "oops" * 50) }
+
+      it "does not update the gloat" do
+        do_request
+        gloat.reload
+        expect(gloat.content).to_not equal(gloat_attributes[:content])
       end
 
-      it "re-renders the 'edit' template" do
-        skip "no gloat validation"
-        gloat = Gloat.create! valid_attributes
-        put :update, params: {id: gloat.to_param, gloat: invalid_attributes}, session: valid_session
-        expect(response).to render_template("edit")
+      it "responds with status 422 unprocessable entity" do
+        do_request
+        expect(response).to have_http_status(422)
+      end
+
+      it "responds with JSON containing errors" do
+        do_request
+        expect(response.body).to be_valid_json
+        expect(body_as_json).to match({
+          "content": [
+            "is too long (maximum is 140 characters)"
+          ]
+        })
       end
     end
   end
 
   describe "DELETE #destroy" do
     def do_request
-      delete :destroy, params: { id: gloat.id }, session: valid_session
+      delete :destroy, params: { id: gloat.id }
     end
 
     let(:gloat) { Fabricate(:gloat) }
