@@ -7,6 +7,8 @@ class ApiToken < ApplicationRecord
 
   before_create :set_values
 
+  default_scope { includes(:user) }
+
   private
 
     def set_values
