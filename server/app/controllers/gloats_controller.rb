@@ -1,4 +1,5 @@
 class GloatsController < ApplicationController
+  before_action :authenticate!, only: [:create, :update, :destroy]
   before_action :set_gloat, only: [:show, :update, :destroy]
 
   # GET /gloats
@@ -16,6 +17,9 @@ class GloatsController < ApplicationController
   # POST /gloats
   def create
     @gloat = Gloat.new(gloat_params)
+    @gloat.user = current_user
+
+    authorize @gloat
 
     if @gloat.save
       render json: @gloat, status: :created, location: @gloat
@@ -26,6 +30,8 @@ class GloatsController < ApplicationController
 
   # PATCH/PUT /gloats/1
   def update
+    authorize @gloat
+
     if @gloat.update(gloat_params)
       render json: @gloat
     else
@@ -35,6 +41,8 @@ class GloatsController < ApplicationController
 
   # DELETE /gloats/1
   def destroy
+    authorize @gloat
+
     @gloat.destroy
   end
 
