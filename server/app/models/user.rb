@@ -1,6 +1,15 @@
 class User < ApplicationRecord
   has_secure_password
 
+  validates :username,
+    presence: true,
+    uniqueness: { case_sensitive: false },
+    length: { minimum: 3 }
+
+  validates :name,
+    presence: true,
+    length: { minimum: 3 }
+
   validates :email,
     presence: true,
     uniqueness: { case_sensitive: false },
