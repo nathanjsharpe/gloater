@@ -27,6 +27,7 @@ RSpec.describe GloatsController, type: :controller do
         user: {
           username: gloat.user.username,
           name: gloat.user.name,
+          image: gloat.user.image
         }
       })
     end

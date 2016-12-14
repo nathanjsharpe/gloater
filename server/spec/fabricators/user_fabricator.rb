@@ -7,6 +7,7 @@ Fabricator(:user) do
   company         { Faker::Company.name }
   name            { Faker::StarWars.character }
   username        { Faker::Internet.user_name }
+  image           { 'http://placehold.it/150x150'}
 end
 
 Fabricator(:new_user, from: :user) do
@@ -19,6 +20,7 @@ Fabricator(:new_user, from: :user) do
   company         { Faker::Company.name }
   name            { Faker::StarWars.character }
   username        { Faker::Internet.user_name }
+  image           { 'http://placehold.it/150x150'}
 end
 
 Fabricator(:user_with_token, from: :user) do

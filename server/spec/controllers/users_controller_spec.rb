@@ -36,6 +36,7 @@ RSpec.describe UsersController, type: :controller do
         email: user.email,
         city: user.city,
         state: user.state,
+        image: user.image,
       })
     end
 
@@ -69,7 +70,8 @@ RSpec.describe UsersController, type: :controller do
         expect(response.body).to be_valid_json
         expect(body_as_json).to include({
           email: user_attributes[:email],
-          id: be_kind_of(Integer)
+          id: be_kind_of(Integer),
+          image: user_attributes[:image]
         })
       end
 

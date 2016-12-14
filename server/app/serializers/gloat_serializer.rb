@@ -4,6 +4,6 @@ class GloatSerializer < ActiveModel::Serializer
   belongs_to :user
 
   class UserSerializer < ActiveModel::Serializer
-    attributes :username, :name
+    attributes :username, :name, :image
   end
 end

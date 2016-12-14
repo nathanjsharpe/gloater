@@ -33,7 +33,8 @@ RSpec.describe SessionsController, type: :controller do
             state: user.state,
             company: user.company,
             profession: user.profession,
-            created_at: be_kind_of(String)
+            created_at: be_kind_of(String),
+            image: user.image
           },
         })
       end
