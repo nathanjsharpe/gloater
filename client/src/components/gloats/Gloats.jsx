@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import Card from 'material-ui/Card';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
-import api from 'Util/api';
+import { connect } from 'react-redux';
+import './Gloats.css';
+import Gloat from './Gloat';
+import CircularProgress from 'material-ui/CircularProgress';
+import * as gloatActions from 'Actions/gloat-actions';
 
 class Gloats extends Component {
-  static defaultProps = {
-    gloats: [],
-  };
-
   componentDidMount() {
-    console.log(process.env);
-    api().gloats().get();
+    const { fetchGloats } = this.props;
+    fetchGloats();
   }
 
   render() {
@@ -18,14 +16,23 @@ class Gloats extends Component {
 
     return (
       <div className="Gloats">
-        <RefreshIndicator
-          status={loading ? 'loading' : 'hide'}
-        />
-        {gloats.map(gloat => <Card />)}
+        {loading && <CircularProgress />}
+        {!loading && gloats && gloats.map((gloat, index) => (
+          <Gloat
+            key={gloat.id}
+            gloat={gloat}
+            style={{animationDelay: `${0.05 * index}s`}}
+          />
+        ))}
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  gloats: Object.keys(state.gloats.byId).map(id => state.gloats.byId[id]),
+  loading: state.gloats.loading,
+});
+
 export { Gloats };
-export default Gloats;
+export default connect(mapStateToProps, gloatActions)(Gloats);

@@ -1,1 +1,2 @@
-export const TEST_ACTION = 'TEST_ACTION';
+export const FETCH_GLOATS = 'FETCH_GLOATS';
+export const RECEIVE_GLOATS = 'RECEIVE_GLOATS'

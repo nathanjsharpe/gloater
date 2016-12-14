@@ -2,8 +2,8 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { Gloats } from './Gloats';
-import Card from 'material-ui/Card';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
+import Gloat from './Gloat';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const testGloats = [
   {
@@ -36,50 +36,45 @@ const testGloats = [
 ];
 
 describe('<Gloats>', () => {
-  it('renders a RefreshIndicator', () => {
-    const wrapper = shallow(
-      <Gloats
-        gloats={testGloats}
-      />
-    );
-    expect(wrapper.find(RefreshIndicator)).to.have.length(1);
-  });
-
-  it('renders a Card for each gloat', () => {
-    const wrapper = shallow(
-      <Gloats
-        gloats={testGloats}
-      />
-    );
-    expect(wrapper.find(Card)).to.have.length(3);
-  });
 
   describe('when loading', () => {
-    const getWrapper = () => shallow(
+    const render = () => shallow(
       <Gloats
         gloats={testGloats}
         loading
       />
     );
 
-    it('passes status of "loading" to RefreshIndicator', () => {
-      const wrapper = getWrapper();
+    it('renders CircularProgress', () => {
+      const wrapper = render();
 
-      expect(wrapper.find(RefreshIndicator).prop('status')).to.equal('loading');
+      expect(wrapper.find(CircularProgress).length).to.equal(1);
+    });
+
+    it('does not render gloats', () => {
+      const wrapper = render();
+
+      expect(wrapper.find(Gloat)).to.have.length(0);
     });
   });
 
   describe('when not loading', () => {
-    const getWrapper = () => shallow(
+    const render = () => shallow(
       <Gloats
         gloats={testGloats}
         loading={false}
       />
     );
 
-    it('passes status of "loading" to RefreshIndicator', () => {
-      const wrapper = getWrapper();
-      expect(wrapper.find(RefreshIndicator).prop('status')).to.equal('hide');
+    it('renders a Gloat component for each gloat', () => {
+      const wrapper = render();
+
+      expect(wrapper.find(Gloat)).to.have.length(3);
+    });
+
+    it('does not render CircularProgress', () => {
+      const wrapper = render();
+      expect(wrapper.find(CircularProgress).length).to.equal(0);
     });
   })
 

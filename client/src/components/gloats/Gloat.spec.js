@@ -31,9 +31,9 @@ describe('<Gloat>', () => {
     expect(wrapper.find(CardHeader)).to.have.length(1);
   })
 
-  it('passes username of the user as subtitle to CardHeader', () => {
+  it('passes username of the user prepended with "@" as subtitle to CardHeader', () => {
     const wrapper = render();
-    expect(wrapper.find(CardHeader).prop('subtitle')).to.equal('username');
+    expect(wrapper.find(CardHeader).prop('subtitle')).to.equal('@username');
   });
 
   it('passes name of the user as title to CardHeader', () => {
