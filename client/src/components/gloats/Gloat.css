@@ -12,6 +12,34 @@
 @media only screen and (min-width : 768px) {
   .Gloat {
     padding: 10px;
+    flex-basis: 50%;
+  }
+}
+
+@media only screen and (min-width : 1024px) {
+  .Gloat {
+    padding: 10px;
+    flex-basis: 33%;
+  }
+}
+
+@media only screen and (min-width : 1440px) {
+  .Gloat {
+    padding: 10px;
+    flex-basis: 25%;
+  }
+}
+
+@media only screen and (min-width : 1440px) {
+  .Gloat {
+    padding: 10px;
+    flex-basis: 25%;
+  }
+}
+
+@media only screen and (min-width : 1900px) {
+  .Gloat {
+    padding: 10px;
     flex-basis: 20%;
   }
 }

@@ -21,7 +21,7 @@ class Gloats extends Component {
           <Gloat
             key={gloat.id}
             gloat={gloat}
-            style={{animationDelay: `${0.05 * index}s`}}
+            style={{animationDelay: `${0.03 * index}s`}}
           />
         ))}
       </div>
