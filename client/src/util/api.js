@@ -1,5 +1,5 @@
-function api({ baseUrl = process.env.GLOATER_API_URL }) {
-  let currentUrl = baseUrl;
+function api({ baseUrl } = {}) {
+  let currentUrl = baseUrl || process.env.GLOATER_API_URL;
 
   return {
     toString,

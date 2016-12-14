@@ -11,6 +11,12 @@ describe('api utility', () => {
     });
   });
 
+  it('defaults to api url defined in environment variable GLOATER_API_URL', () => {
+    // test is worthless if GLOATER_API_URL is undefined
+    expect(process.env.GLOATER_API_URL).not.to.be.undefined;
+    expect(api().toString()).to.equal(process.env.GLOATER_API_URL);
+  });
+
   describe('.gloats', () => {
     it('appends gloats path to current url', () => {
       expect(`${api({ baseUrl }).gloats()}`).to.equal(`${baseUrl}/gloats`);
