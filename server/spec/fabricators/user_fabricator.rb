@@ -5,6 +5,8 @@ Fabricator(:user) do
   state           { Faker::Address.state_abbr }
   profession      { Faker::Company.profession }
   company         { Faker::Company.name }
+  name            { Faker::StarWars.character }
+  username        { Faker::Internet.user_name }
 end
 
 Fabricator(:new_user, from: :user) do
@@ -15,6 +17,8 @@ Fabricator(:new_user, from: :user) do
   state           { Faker::Address.state_abbr }
   profession      { Faker::Company.profession }
   company         { Faker::Company.name }
+  name            { Faker::StarWars.character }
+  username        { Faker::Internet.user_name }
 end
 
 Fabricator(:user_with_token, from: :user) do

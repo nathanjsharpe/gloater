@@ -23,7 +23,7 @@ RSpec.describe GloatsController, type: :controller do
       expect(response.body).to be_valid_json
       expect(body_as_json).to include({
         id: gloat.id,
-        content: gloat.content
+        content: gloat.content,
       })
     end
   end
