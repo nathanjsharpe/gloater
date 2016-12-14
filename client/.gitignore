@@ -5,6 +5,7 @@ node_modules
 
 # testing
 coverage
+reports
 
 # production
 build
@@ -13,3 +14,4 @@ build
 .DS_Store
 .env
 npm-debug.log
+selenium-debug.log

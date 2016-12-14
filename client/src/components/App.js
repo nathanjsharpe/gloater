@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import { BrowserRouter, Match, Miss, Link } from 'react-router';
 import Home from './Home';
-import About from './About';
 import NotFound from './NotFound';
 
 const App = () => (
