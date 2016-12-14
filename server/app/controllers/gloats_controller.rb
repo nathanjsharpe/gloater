@@ -4,7 +4,7 @@ class GloatsController < ApplicationController
 
   # GET /gloats
   def index
-    @gloats = Gloat.all
+    @gloats = Gloat.includes(:user).all
 
     render json: @gloats
   end

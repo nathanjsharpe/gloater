@@ -24,6 +24,10 @@ RSpec.describe GloatsController, type: :controller do
       expect(body_as_json).to include({
         id: gloat.id,
         content: gloat.content,
+        user: {
+          username: gloat.user.username,
+          name: gloat.user.name,
+        }
       })
     end
   end
