@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import api from 'Util/api';
+import api from './api';
 import fetchMock from 'fetch-mock';
 
 const baseUrl = 'http://example.com';

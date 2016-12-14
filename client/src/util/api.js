@@ -1,4 +1,3 @@
-// allows for easy construction and issuing of api requests
 function api({ baseUrl = process.env.GLOATER_API_URL }) {
   let currentUrl = baseUrl;
 
