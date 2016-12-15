@@ -17,4 +17,8 @@ class User < ApplicationRecord
     format: { with: /\A\S+@\S+\z/, message: "must be a valid email address" }
 
   has_many :api_tokens
+  has_and_belongs_to_many :admired_gloats,
+    class_name: 'Gloat',
+    join_table: :admires,
+    inverse_of: :admirers
 end
