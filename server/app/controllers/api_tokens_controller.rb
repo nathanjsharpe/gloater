@@ -1,2 +1,0 @@
-class ApiTokensController < ApplicationController
-end

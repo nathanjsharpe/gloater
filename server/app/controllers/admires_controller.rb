@@ -1,0 +1,2 @@
+class AdmiresController < ApplicationController
+end
