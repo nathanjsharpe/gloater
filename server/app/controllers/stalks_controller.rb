@@ -1,0 +1,2 @@
+class StalksController < ApplicationController
+end
