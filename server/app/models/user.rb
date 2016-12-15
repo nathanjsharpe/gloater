@@ -21,4 +21,18 @@ class User < ApplicationRecord
     class_name: 'Gloat',
     join_table: :admires,
     inverse_of: :admirers
+
+  # TODO: is there a way to define both in one statement?
+  has_and_belongs_to_many :stalkers,
+    class_name: 'User',
+    join_table: :stalks,
+    inverse_of: :stalked_users,
+    foreign_key: :stalked_id,
+    association_foreign_key: :stalker_id
+  has_and_belongs_to_many :stalked_users,
+    class_name: 'User',
+    join_table: :stalks,
+    inverse_of: :stalkers,
+    foreign_key: :stalker_id,
+    association_foreign_key: :stalked_id
 end
