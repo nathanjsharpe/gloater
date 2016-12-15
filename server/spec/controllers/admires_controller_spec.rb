@@ -75,5 +75,26 @@ RSpec.describe AdmiresController, type: :controller do
   end
 
   context "without valid token" do
+    describe "GET #index" do
+      before { get :index }
+
+      it_behaves_like "an unauthorized request"
+    end
+
+    describe "POST #create" do
+      let(:gloat) { Fabricate(:gloat) }
+
+      before { post :create, params: { gloat_id: gloat.id } }
+
+      it_behaves_like "an unauthorized request"
+    end
+
+    describe "DELETE #destroy" do
+      let(:gloat) { Fabricate(:gloat) }
+
+      before { delete :destroy, params: { gloat_id: gloat.id } }
+
+      it_behaves_like "an unauthorized request"
+    end
   end
 end
