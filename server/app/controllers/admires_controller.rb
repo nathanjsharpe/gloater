@@ -1,4 +1,5 @@
 class AdmiresController < ApplicationController
+  before_action :authenticate!
   before_action :set_gloat, only: [:create, :destroy]
 
   def index
