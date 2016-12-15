@@ -54,7 +54,7 @@ RSpec.describe AdmiresController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      let(:gloat) { Fabricate(:gloat, admirers: [user]) }
+      let!(:gloat) { Fabricate(:gloat, admirers: [user]) }
 
       def do_request
         delete :destroy, params: { gloat_id: gloat.id }
