@@ -2,16 +2,11 @@ require 'rails_helper'
 
 RSpec.describe AdmiresController, type: :controller do
   context "with valid token" do
-    before(:each) do
-      @request.headers["Authorization"] = api_token.token
-    end
-
-    let(:api_token) { Fabricate(:api_token) }
-    let(:user) { api_token.user }
+    include_context "authenticated"
 
     describe "GET #index" do
       before(:each) do
-        Fabricate.times(3, :gloat, admirers: [user])
+        Fabricate.times(3, :gloat, admirers: [current_user])
         Fabricate.times(5, :gloat, admirers: [Fabricate(:user)])
         get :index
       end
@@ -41,7 +36,7 @@ RSpec.describe AdmiresController, type: :controller do
       it "adds gloat to user's admired gloats" do
         expect {
           do_request
-        }.to change(user.reload.admired_gloats, :count).by(1)
+        }.to change(current_user.reload.admired_gloats, :count).by(1)
       end
 
       it "returns admired gloat as json" do
@@ -54,7 +49,7 @@ RSpec.describe AdmiresController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      let!(:gloat) { Fabricate(:gloat, admirers: [user]) }
+      let!(:gloat) { Fabricate(:gloat, admirers: [current_user]) }
 
       def do_request
         delete :destroy, params: { gloat_id: gloat.id }
@@ -68,7 +63,7 @@ RSpec.describe AdmiresController, type: :controller do
       it "removes gloats from user's admired gloats" do
         expect {
           do_request
-        }.to change(user.reload.admired_gloats, :count).by(-1)
+        }.to change(current_user.reload.admired_gloats, :count).by(-1)
       end
     end
 

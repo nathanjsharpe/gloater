@@ -2,16 +2,11 @@ require 'rails_helper'
 
 RSpec.describe StalksController, type: :controller do
   context "with valid token" do
-    before(:each) do
-      @request.headers["Authorization"] = api_token.token
-    end
-
-    let(:api_token) { Fabricate(:api_token) }
-    let(:user) { api_token.user }
+    include_context "authenticated"
 
     describe "GET #index" do
       before(:each) do
-        Fabricate.times(3, :user, stalkers: [user])
+        Fabricate.times(3, :user, stalkers: [current_user])
         Fabricate.times(5, :user, stalkers: [Fabricate(:user)])
         get :index
       end
@@ -41,7 +36,7 @@ RSpec.describe StalksController, type: :controller do
       it "adds user to user's stalked users" do
         expect {
           do_request
-        }.to change(user.reload.stalked_users, :count).by(1)
+        }.to change(current_user.reload.stalked_users, :count).by(1)
       end
 
       it "returns stalked user as json" do
@@ -54,7 +49,7 @@ RSpec.describe StalksController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      let!(:stalkee) { Fabricate(:user, stalkers: [user]) }
+      let!(:stalkee) { Fabricate(:user, stalkers: [current_user]) }
 
       def do_request
         delete :destroy, params: { user_id: stalkee.id }
@@ -68,7 +63,7 @@ RSpec.describe StalksController, type: :controller do
       it "removes user from user's stalked_users" do
         expect {
           do_request
-        }.to change(user.reload.stalked_users, :count).by(-1)
+        }.to change(current_user.reload.stalked_users, :count).by(-1)
       end
     end
 

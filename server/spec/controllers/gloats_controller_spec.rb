@@ -15,21 +15,24 @@ RSpec.describe GloatsController, type: :controller do
 
     let(:gloat) { Fabricate(:gloat) }
 
-    it "returns http success" do
-      expect(response).to have_http_status(:success)
-    end
+    context "without valid token" do
 
-    it "responds with JSON containing gloat" do
-      expect(response.body).to be_valid_json
-      expect(body_as_json).to include({
-        id: gloat.id,
-        content: gloat.content,
-        user: {
-          username: gloat.user.username,
-          name: gloat.user.name,
-          image: gloat.user.image
-        }
-      })
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "responds with JSON containing gloat" do
+        expect(response.body).to be_valid_json
+        expect(body_as_json).to include({
+          id: gloat.id,
+          content: gloat.content,
+          user: {
+            username: gloat.user.username,
+            name: gloat.user.name,
+            image: gloat.user.image
+          }
+        })
+      end
     end
   end
 
@@ -39,13 +42,8 @@ RSpec.describe GloatsController, type: :controller do
       post :create, params: { gloat: gloat_attributes }
     end
 
-    let(:api_token) { Fabricate(:api_token) }
-    let(:user) { api_token.user }
-
     context "with valid token" do
-      before(:each) do
-        @request.headers["Authorization"] = api_token.token
-      end
+      include_context "authenticated"
 
       context "with valid params" do
 
@@ -55,7 +53,7 @@ RSpec.describe GloatsController, type: :controller do
           expect {
             do_request
           }.to change(Gloat, :count).by(1)
-          expect(Gloat.last.user.id).to equal(user.id)
+          expect(Gloat.last.user.id).to equal(current_user.id)
         end
 
         it "responds with created status" do
@@ -68,7 +66,10 @@ RSpec.describe GloatsController, type: :controller do
           expect(response.body).to be_valid_json
           expect(body_as_json).to include({
             content: gloat_attributes[:content],
-            id: be_kind_of(Integer)
+            id: be_kind_of(Integer),
+            user: include({
+              username: current_user.username
+            })
           })
         end
       end
@@ -113,17 +114,13 @@ RSpec.describe GloatsController, type: :controller do
     let(:gloat) { Fabricate(:gloat) }
 
     context "with valid token for user who authored the gloat" do
-      before(:each) do
-        @request.headers["Authorization"] = api_token.token
-      end
+      include_context "authenticated"
 
       def do_request
         put :update, params: { id: gloat.id, gloat: gloat_attributes }
       end
 
-      let(:api_token) { Fabricate(:api_token) }
-      let(:user) { api_token.user }
-      let(:gloat) { Fabricate(:gloat, user: user) }
+      let(:gloat) { Fabricate(:gloat, user: current_user) }
 
       context "with valid params" do
         let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
@@ -195,17 +192,13 @@ RSpec.describe GloatsController, type: :controller do
 
   describe "DELETE #destroy" do
     context "with valid token for the user who authored the gloat" do
-      before(:each) do
-        request.headers["Authorization"] = api_token.token
-      end
+      include_context "authenticated"
 
       def do_request
         delete :destroy, params: { id: gloat.id }
       end
 
-      let(:api_token) { Fabricate(:api_token) }
-      let(:user) { api_token.user }
-      let(:gloat) { Fabricate(:gloat, user: user) }
+      let(:gloat) { Fabricate(:gloat, user: current_user) }
 
       it "destroys the requested gloat" do
         gloat
