@@ -34,8 +34,8 @@ RSpec.describe GloatsController, type: :controller do
   end
 
   describe "POST #create" do
+
     def do_request
-      @request.headers["Authorization"] = auth_header
       post :create, params: { gloat: gloat_attributes }
     end
 
@@ -43,8 +43,9 @@ RSpec.describe GloatsController, type: :controller do
     let(:user) { api_token.user }
 
     context "with valid token" do
-
-      let(:auth_header) { api_token.token }
+      before(:each) do
+        @request.headers["Authorization"] = api_token.token
+      end
 
       context "with valid params" do
 
@@ -101,7 +102,6 @@ RSpec.describe GloatsController, type: :controller do
 
     context "without valid token" do
       let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
-      let(:auth_header) { nil }
 
       it "responds with 401 status" do
         do_request
@@ -122,8 +122,11 @@ RSpec.describe GloatsController, type: :controller do
     let(:gloat) { Fabricate(:gloat) }
 
     context "with valid token for user who authored the gloat" do
-      def do_request
+      before(:each) do
         @request.headers["Authorization"] = api_token.token
+      end
+
+      def do_request
         put :update, params: { id: gloat.id, gloat: gloat_attributes }
       end
 
@@ -176,8 +179,11 @@ RSpec.describe GloatsController, type: :controller do
     end
 
     context "with token of a different user" do
-      def do_request
+      before(:each) do
         @request.headers["Authorization"] = api_token.token
+      end
+
+      def do_request
         put :update, params: { id: gloat.id, gloat: gloat_attributes }
       end
 
@@ -196,7 +202,6 @@ RSpec.describe GloatsController, type: :controller do
 
     context "without valid token" do
       def do_request
-        @request.headers["Authorization"] = nil
         put :update, params: { id: gloat.id, gloat: gloat_attributes }
       end
 
@@ -211,8 +216,11 @@ RSpec.describe GloatsController, type: :controller do
 
   describe "DELETE #destroy" do
     context "with valid token for the user who authored the gloat" do
-      def do_request
+      before(:each) do
         request.headers["Authorization"] = api_token.token
+      end
+
+      def do_request
         delete :destroy, params: { id: gloat.id }
       end
 
@@ -234,8 +242,11 @@ RSpec.describe GloatsController, type: :controller do
     end
 
     context "with token of a different user" do
-      def do_request
+      before(:each) do
         @request.headers["Authorization"] = api_token.token
+      end
+
+      def do_request
         delete :destroy, params: { id: gloat.id }
       end
 

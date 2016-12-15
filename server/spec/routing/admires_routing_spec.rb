@@ -4,7 +4,7 @@ RSpec.describe AdmiresController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/admires").to route_to("admires#index")
+      expect(:get => "/admired_gloats").to route_to("admires#index")
     end
 
     it "routes to #create" do
