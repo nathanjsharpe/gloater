@@ -6,7 +6,7 @@ Fabricator(:user) do
   profession      { Faker::Company.profession }
   company         { Faker::Company.name }
   name            { Faker::StarWars.character }
-  username        { Faker::Internet.user_name }
+  username        { Faker::Internet.user_name * 2 }
   image           { 'http://placehold.it/150x150'}
 end
 
@@ -19,7 +19,7 @@ Fabricator(:new_user, from: :user) do
   profession      { Faker::Company.profession }
   company         { Faker::Company.name }
   name            { Faker::StarWars.character }
-  username        { Faker::Internet.user_name }
+  username        { Faker::Internet.user_name * 2 }
   image           { 'http://placehold.it/150x150'}
 end
 

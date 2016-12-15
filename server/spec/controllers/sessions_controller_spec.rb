@@ -38,6 +38,11 @@ RSpec.describe SessionsController, type: :controller do
           },
         })
       end
+
+      it "does not include stalked key in json" do
+        do_request
+        expect(body_as_json).not_to include(:stalked)
+      end
     end
 
     context "with wrong password" do

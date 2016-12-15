@@ -19,7 +19,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe "GET #show" do
-    before do
+    before(:each) do
       get :show, params: { id: user.id }
     end
 
@@ -36,12 +36,41 @@ RSpec.describe UsersController, type: :controller do
         email: user.email,
         city: user.city,
         state: user.state,
-        image: user.image,
+        image: user.image
       })
     end
 
     it "does not include private fields in response object" do
       expect(body_as_json).to_not include(:password_digest, :updated_at)
+    end
+
+    context "with valid token" do
+      let(:api_token) { Fabricate(:api_token) }
+      let(:current_user) { api_token.user }
+
+      before(:each) do
+        @request.headers["Authorization"] = api_token.token
+      end
+
+      def do_request
+        get :show, params: { id: user.id }
+      end
+
+      it "indicates user is not stalked if current user is not stalking user" do
+        do_request
+        expect(body_as_json).to include({
+          stalked: false
+        })
+      end
+
+      it "indicates user is stalked if current user is stalking user" do
+        current_user.stalked_users << user
+        current_user.save
+        do_request
+        expect(body_as_json).to include({
+          stalked: true
+        })
+      end
     end
   end
 
