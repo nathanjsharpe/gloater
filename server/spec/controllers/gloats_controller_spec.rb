@@ -103,18 +103,9 @@ RSpec.describe GloatsController, type: :controller do
     context "without valid token" do
       let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
 
-      it "responds with 401 status" do
-        do_request
-        expect(response).to have_http_status(401)
-      end
+      before { do_request }
 
-      it "responds with json containing error" do
-        do_request
-        expect(response.body).to be_valid_json
-        expect(body_as_json).to match({
-          error: "Invalid api token"
-        })
-      end
+      it_behaves_like "an unauthorized request"
     end
   end
 
@@ -181,9 +172,6 @@ RSpec.describe GloatsController, type: :controller do
     context "with token of a different user" do
       before(:each) do
         @request.headers["Authorization"] = api_token.token
-      end
-
-      def do_request
         put :update, params: { id: gloat.id, gloat: gloat_attributes }
       end
 
@@ -191,26 +179,17 @@ RSpec.describe GloatsController, type: :controller do
       let(:user) { api_token.user }
       let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
 
-      it "responds with 403 status and unauthorized error" do
-        do_request
-        expect(response).to have_http_status(403)
-        expect(body_as_json).to match({
-          error: "Unauthorized"
-        })
-      end
+      it_behaves_like "a forbidden request"
     end
 
     context "without valid token" do
-      def do_request
+      before(:each) do
         put :update, params: { id: gloat.id, gloat: gloat_attributes }
       end
 
       let(:gloat_attributes) { Fabricate.attributes_for(:gloat) }
 
-      it "responds with 401 status" do
-        do_request
-        expect(response).to have_http_status(401)
-      end
+      it_behaves_like "an unauthorized request"
     end
   end
 
@@ -244,9 +223,6 @@ RSpec.describe GloatsController, type: :controller do
     context "with token of a different user" do
       before(:each) do
         @request.headers["Authorization"] = api_token.token
-      end
-
-      def do_request
         delete :destroy, params: { id: gloat.id }
       end
 
@@ -254,14 +230,7 @@ RSpec.describe GloatsController, type: :controller do
       let(:user) { api_token.user }
       let(:gloat) { Fabricate(:gloat) }
 
-      it "responds with 403 status and unauthorized error" do
-        do_request
-        expect(response).to have_http_status(403)
-        expect(body_as_json).to match({
-          error: "Unauthorized"
-        })
-      end
+      it_behaves_like "a forbidden request"
     end
   end
-
 end
