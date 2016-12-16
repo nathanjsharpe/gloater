@@ -1,20 +1,29 @@
-# README
+# Use it
 
-Setup databse `bin/rails db:setup`
-Run server: `bin/rails s`
-Run tests: `bin/rails rspec`
+## Run it
 
-project created with rails new --api, skipping most things
-rspec, fabricator, database_cleaner for testing
+1. Install: `bundle install`
+2. Set up database: `bin/rails db:setup`
+3. Run server: `bin/rails s`
+4. Use it at `localhost:3000`
 
-# Features
+You may want to start the web app in the `client` directory alongside this `server` directory to use it. Or, you know, `curl` away (or postman or whatever suits your fancy).
 
-## Authorization
+## Test it
 
-add pundit
-only signed in users can create gloats
-  post to gloats saves gloat with current user id
-users can only update their own gloats
-users can only destroy their own gloats
+1. Install: `bundle install`
+2. Set up database: `bin/rails db:migrate RAILS_ENV=test`
+3. Run tests: `bin/rspec`
 
-pagination
+# Set up notes
+
+The database seeds use the `randomuser.me` api to create users. You get images that way, which makes things less boring.
+
+# Gems
+
+There are a few comments in the `Gemfile`, but I don't think I used anything too out of the ordinary.
+
+# TODO
+
+pagination - headers
+docker

@@ -10,30 +10,35 @@ gem 'puma', '~> 3.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
+# Useful for development, potentially for production on heroku
 gem 'rack-cors'
 
+# Used has_secure_password for users
 gem 'bcrypt', '~> 3.1.7'
 
+# I prefer active model serializers to jbuilder, but they're both fine
 gem 'active_model_serializers', '~> 0.10.0'
 
+# Pundit for authorization
 gem 'pundit', '~> 1.1.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+
+  # Random and less boring test and seed data
   gem 'faker', '~> 1.6.6'
+
+  # After not setting up a new project for a while, factory girl has apparently been superseded by fabrication?
+  # Fine by me, as fabrication is nice to use and gets the job done
   gem 'fabrication', '~> 2.16'
 end
 
 group :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'database_cleaner'
-  gem 'shoulda-matchers', '~> 3.1'
-end
 
-group :development do
+  # Allows for some cheating on model tests. Who wants to write a test for uniqueness? Yuck.
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
