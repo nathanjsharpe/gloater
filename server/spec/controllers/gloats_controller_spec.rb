@@ -9,13 +9,14 @@ RSpec.describe GloatsController, type: :controller do
   end
 
   describe "GET #show" do
-    before do
+    def do_request
       get :show, params: { id: gloat.id }
     end
 
     let(:gloat) { Fabricate(:gloat) }
 
     context "without valid token" do
+      before { do_request }
 
       it "returns http success" do
         expect(response).to have_http_status(:success)
@@ -32,6 +33,41 @@ RSpec.describe GloatsController, type: :controller do
             image: gloat.user.image
           }
         })
+      end
+
+      it "does not include admired in returned gloat" do
+        expect(body_as_json).not_to include(:admired)
+      end
+    end
+
+    context "with valid token" do
+      include_context "authenticated"
+
+      it "indicates if gloat is not admired by current user" do
+        do_request
+        expect(body_as_json).to include({
+          admired: false
+        })
+      end
+
+      context "when current user is author of gloat" do
+        let(:gloat) { Fabricate(:gloat, user: current_user) }
+
+        it "does not include admired" do
+          do_request
+          expect(body_as_json).not_to include(:admired)
+        end
+      end
+
+      context "with admired gloat" do
+        let(:gloat) { Fabricate(:gloat, admirers: [current_user]) }
+
+        it "indicates if gloat is admired by current user" do
+          do_request
+          expect(body_as_json).to include({
+            admired: true
+          })
+        end
       end
     end
   end

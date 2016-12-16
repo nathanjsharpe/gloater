@@ -7,7 +7,7 @@ class ApiToken < ApplicationRecord
 
   before_create :set_values
 
-  default_scope { includes(:user) }
+  default_scope { includes(user: [:admired_gloats, :stalked_users]) }
 
   private
 

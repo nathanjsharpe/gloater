@@ -44,6 +44,10 @@ RSpec.describe UsersController, type: :controller do
       expect(body_as_json).to_not include(:password_digest, :updated_at)
     end
 
+    it "does not include stalked for unauthenticated requests" do
+      expect(body_as_json).to_not include(:stalked)
+    end
+
     context "with valid token" do
       let(:api_token) { Fabricate(:api_token) }
       let(:current_user) { api_token.user }

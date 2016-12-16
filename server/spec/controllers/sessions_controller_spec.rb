@@ -39,7 +39,7 @@ RSpec.describe SessionsController, type: :controller do
         })
       end
 
-      it "does not include stalked key in json" do
+      it "does not include stalked key in returned user" do
         do_request
         expect(body_as_json).not_to include(:stalked)
       end
