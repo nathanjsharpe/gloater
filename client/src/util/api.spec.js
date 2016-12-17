@@ -29,6 +29,12 @@ describe('api utility', () => {
     });
   });
 
+  describe('.apiToken', () => {
+    it('appends api token path to current url', () => {
+      expect(`${api({ baseUrl }).apiToken()}`).to.equal(`${baseUrl}/api_token`);
+    });
+  });
+
   describe('.users', () => {
     it('appends users path to url', () => {
       expect(`${api({ baseUrl }).users()}`).to.equal(`${baseUrl}/users`);
@@ -58,5 +64,17 @@ describe('api utility', () => {
       })
       .catch(done);
     });
+
+    it('issues post requests with data payload and parses the response', done => {
+      fetchMock.post('*', [{ id: 123, content: 'testing' }]);
+      api({ baseUrl }).gloats().post({ content: 'testing'})
+      .then(resp => {
+        expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
+        console.log(fetchMock.lastOptions().content);
+        expect(resp.length).to.equal(1);
+        done();
+      })
+      .catch(done);
+    })
   })
 });

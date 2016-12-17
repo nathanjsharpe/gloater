@@ -1,3 +1,13 @@
+const sendRequest = (url, options = {}) =>
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    ...options,
+  })
+  .then(resp => resp.json());
+
 function api({ baseUrl } = {}) {
   let currentUrl = baseUrl || process.env.GLOATER_API_URL;
 
@@ -7,10 +17,17 @@ function api({ baseUrl } = {}) {
     gloat,
     users,
     user,
+    apiToken,
     get: get,
+    post,
   }
 
   function toString() { return currentUrl; }
+
+  function apiToken() {
+    currentUrl = `${currentUrl}/api_token`;
+    return this;
+  }
 
   function gloats() {
     currentUrl = `${currentUrl}/gloats`;
@@ -33,8 +50,14 @@ function api({ baseUrl } = {}) {
   }
 
   function get() {
-    return fetch(currentUrl)
-    .then(resp => resp.json());
+    return sendRequest(currentUrl);
+  }
+
+  function post(data) {
+    return sendRequest(currentUrl, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
 }
 

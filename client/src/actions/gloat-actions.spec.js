@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import * as actions from './gloat-actions';
 
 import {
-  FETCH_GLOATS,
-  RECEIVE_GLOATS,
+  FETCH_GLOATS_REQUEST,
+  FETCH_GLOATS_SUCCESS,
 } from './action-types';
 
 const testGloats = [
@@ -42,7 +42,7 @@ describe('gloat action creators', () => {
       actions.fetchGloats()(dispatch)
       .then(() => {
         expect(dispatch.calledWith({
-          type: 'FETCH_GLOATS'
+          type: FETCH_GLOATS_REQUEST
         })).to.be.true;
         done();
       })
@@ -64,7 +64,7 @@ describe('gloat action creators', () => {
       actions.fetchGloats()(dispatch)
       .then(() => {
         expect(dispatch.calledWith({
-          type: 'RECEIVE_GLOATS',
+          type: FETCH_GLOATS_SUCCESS,
           payload: {
             gloats: testGloats,
           },

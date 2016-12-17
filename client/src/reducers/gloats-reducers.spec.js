@@ -1,5 +1,9 @@
 import { expect } from 'chai';
 import gloatReducers from './gloats-reducers';
+import {
+  FETCH_GLOATS_REQUEST,
+  FETCH_GLOATS_SUCCESS,
+} from 'Actions/action-types';
 
 const stateBefore = (data = {}) => ({
   byId: {},
@@ -31,7 +35,7 @@ const testGloats = [
 describe('gloatReducers', () => {
   it('sets loading to true when gloats are fetched', () => {
     const action = {
-      type: 'FETCH_GLOATS',
+      type: FETCH_GLOATS_REQUEST,
     };
 
     const actual = gloatReducers(stateBefore(), action);
@@ -45,7 +49,7 @@ describe('gloatReducers', () => {
 
   it('sets loading to false when gloats are received', () => {
     const action = {
-      type: 'RECEIVE_GLOATS',
+      type: FETCH_GLOATS_SUCCESS,
       payload: { gloats: testGloats }
     };
 
@@ -56,7 +60,7 @@ describe('gloatReducers', () => {
 
   it('saves gloats by id when gloats are received', () => {
     const action = {
-      type: 'RECEIVE_GLOATS',
+      type: FETCH_GLOATS_SUCCESS,
       payload: { gloats: testGloats }
     };
 
@@ -90,12 +94,12 @@ describe('gloatReducers', () => {
 
   it('appends gloats to existing gloats when gloats are received', () => {
     const firstAction = {
-      type: 'RECEIVE_GLOATS',
+      type: FETCH_GLOATS_SUCCESS,
       payload: { gloats: testGloats },
     };
 
     const secondAction = {
-      type: 'RECEIVE_GLOATS',
+      type: FETCH_GLOATS_SUCCESS,
       payload: {
         gloats: [{
           id: 3,

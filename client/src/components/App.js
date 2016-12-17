@@ -6,11 +6,15 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 import Home from './Home';
 import Gloats from 'Components/gloats/Gloats';
 import NotFound from './NotFound';
+import FlatButton from 'material-ui/FlatButton';
 
 const App = () => (
   <BrowserRouter>
     <div className="App">
-      <AppBar title="Gloater" />
+      <AppBar
+        title="Gloater"
+        iconElementRight={<FlatButton label="Login" />}
+      />
       <div className="App-content">
         <Match exactly pattern="/" component={Home} />
         <Match exactly pattern="/gloats" component={Gloats} />

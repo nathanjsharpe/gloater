@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 
 import {
-  RECEIVE_GLOATS,
-  FETCH_GLOATS,
+  FETCH_GLOATS_SUCCESS,
+  FETCH_GLOATS_REQUEST,
 } from 'Actions/action-types';
 
 const byId = (state = {}, action) => {
   switch(action.type) {
-    case RECEIVE_GLOATS:
+    case FETCH_GLOATS_SUCCESS:
       return {
         ...state,
         ...action.payload.gloats.reduce(
@@ -22,9 +22,9 @@ const byId = (state = {}, action) => {
 
 const loading = (state = false, action) => {
   switch(action.type) {
-    case FETCH_GLOATS:
+    case FETCH_GLOATS_REQUEST:
       return true;
-    case RECEIVE_GLOATS:
+    case FETCH_GLOATS_SUCCESS:
       return false;
     default:
       return state;
