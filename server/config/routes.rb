@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :api_tokens
   resources :users, except: [:update, :destroy] do
     resource :stalk, only: [:create, :destroy]
   end
@@ -8,5 +7,5 @@ Rails.application.routes.draw do
   resources :gloats do
     resource :admire, only: [:create, :destroy]
   end
-  resources :sessions, only: [:create, :destroy]
+  resource :api_token, only: [:create, :destroy]
 end

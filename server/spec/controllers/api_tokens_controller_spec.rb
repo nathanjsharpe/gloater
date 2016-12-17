@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SessionsController, type: :controller do
+RSpec.describe ApiTokensController, type: :controller do
   describe "POST #create" do
     def do_request
       post :create, params: { user: { email: user.email, password: user.password } }
