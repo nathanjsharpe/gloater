@@ -1,0 +1,17 @@
+{
+  "name": "gloater",
+  "version": "0.1.0",
+  "description": "Lamer but more honest version of twitter",
+  "scripts": {
+    "apidoc": "node_modules/apidoc/bin/apidoc -i server/app/ -o apidoc/"
+  },
+  "repository": {
+    "url": "git@github.com:nathanjsharpe/gloater.git",
+    "type": "git"
+  },
+  "author": "Nathan Sharpe <nathanjsharpe@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "apidoc": "^0.16.1"
+  }
+}
