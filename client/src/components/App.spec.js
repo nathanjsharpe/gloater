@@ -3,7 +3,7 @@ import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme'
 import { shallow } from 'enzyme';
 import { App } from './App';
-import AppBar from 'material-ui/AppBar';
+import Navbar from './Navbar';
 
 chai.use(chaiEnzyme);
 const { expect } = chai;
@@ -13,7 +13,7 @@ describe('<App>', () => {
     expect(shallow(<App />).find('div.App')).to.have.length(1);
   });
 
-  it('renders an AppBar', () => {
-    expect(shallow(<App />).find(AppBar)).to.have.length(1);
+  it('renders a Navbar', () => {
+    expect(shallow(<App />).find(Navbar)).to.have.length(1);
   });
 });

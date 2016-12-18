@@ -51,6 +51,29 @@ describe('api utility', () => {
     expect(api({ baseUrl }).user('test_user').gloats().toString()).to.equal(`${baseUrl}/users/test_user/gloats`);
   });
 
+  describe('authorization', () => {
+    afterEach(() => fetchMock.restore());
+
+    it('includes current auth token as Authorization header', done => {
+      const state = {
+        auth: {
+          token: 'testapitoken',
+        },
+      };
+
+      fetchMock.get('*', {});
+      api({ baseUrl, state }).gloats().get()
+      .then(resp => {
+        expect(fetchMock.lastOptions().headers).to.deep.include({
+          Authorization: 'testapitoken',
+        });
+        done();
+      })
+      .catch(done);
+    });
+  });
+
+
   describe('http methods', () => {
     afterEach(() => fetchMock.restore());
 
@@ -70,7 +93,6 @@ describe('api utility', () => {
       api({ baseUrl }).gloats().post({ content: 'testing'})
       .then(resp => {
         expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
-        console.log(fetchMock.lastOptions().content);
         expect(resp.length).to.equal(1);
         done();
       })

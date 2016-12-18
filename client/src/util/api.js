@@ -1,15 +1,23 @@
-const sendRequest = (url, options = {}) =>
+import store from 'Store';
+import get from 'lodash.get';
+
+const sendRequest = (url, { method = 'GET', headers = {}, body, state = {} }) =>
   fetch(url, {
-    method: 'GET',
+    method,
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': get(state, 'auth.token'),
+      ...headers,
     },
-    ...options,
+    body,
   })
   .then(resp => resp.json());
 
-function api({ baseUrl } = {}) {
-  let currentUrl = baseUrl || process.env.GLOATER_API_URL;
+function api({
+  baseUrl =  process.env.GLOATER_API_URL,
+  state = store.getState(),
+} = {}) {
+  let currentUrl = baseUrl;
 
   return {
     toString,
@@ -50,13 +58,14 @@ function api({ baseUrl } = {}) {
   }
 
   function get() {
-    return sendRequest(currentUrl);
+    return sendRequest(currentUrl, { state });
   }
 
   function post(data) {
     return sendRequest(currentUrl, {
       method: 'POST',
       body: JSON.stringify(data),
+      state,
     });
   }
 }

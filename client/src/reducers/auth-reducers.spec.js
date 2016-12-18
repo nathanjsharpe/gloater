@@ -3,6 +3,9 @@ import authReducers from './auth-reducers';
 import {
   CREATE_API_TOKEN_REQUEST,
   CREATE_API_TOKEN_SUCCESS,
+  OPEN_USER_MENU,
+  CLOSE_USER_MENU,
+  TOGGLE_USER_MENU,
 } from 'Actions/action-types';
 
 const stateBefore = (data = {}) => ({
@@ -10,6 +13,7 @@ const stateBefore = (data = {}) => ({
   token: null,
   expiresAt: null,
   currentUser: null,
+  userMenuOpen: false,
   ...data,
 });
 
@@ -42,7 +46,7 @@ describe('authReducers', () => {
       currentUser: null,
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).to.deep.include(expected);
   });
 
   it('sets isFetching to false when api token is received', () => {
@@ -70,6 +74,39 @@ describe('authReducers', () => {
       currentUser: apiTokenPayload.user,
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).to.deep.include(expected);
   });
+
+  describe('user menu state', () => {
+    it('sets user menu to open', () => {
+      const action = { type: OPEN_USER_MENU };
+      const actual = authReducers(stateBefore(), action);
+      const expected = {
+        userMenuOpen: true,
+      };
+      expect(actual).to.deep.include(expected);
+    });
+
+    it('sets user menu to closed', () => {
+      const action = { type: CLOSE_USER_MENU };
+      const actual = authReducers(stateBefore({ userMenuOpen: true }), action);
+      const expected = { userMenuOpen: false };
+      expect(actual).to.deep.include(expected);
+    });
+
+    it('sets open menu to closed in response to toggle action', () => {
+      const action = { type: TOGGLE_USER_MENU };
+      const actual = authReducers(stateBefore({ userMenuOpen: true }), action);
+      const expected = { userMenuOpen: false };
+      expect(actual).to.deep.include(expected);
+    });
+
+    it('sets closed menu to open in response to toggle action', () => {
+      const action = { type: TOGGLE_USER_MENU };
+      const actual = authReducers(stateBefore({ userMenuOpen: false }), action);
+      const expected = { userMenuOpen: true };
+      expect(actual).to.deep.include(expected);
+    });
+
+  })
 });

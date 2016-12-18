@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardHeader, CardText } from 'material-ui/Card';
+import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
+import AdmireButton from 'Components/gloats/AdmireButton';
 import './Gloat.css';
 
 const Gloat = ({ gloat, style }) => (
@@ -11,6 +12,9 @@ const Gloat = ({ gloat, style }) => (
         avatar={gloat.user.image || 'http://placehold.it/150x150'}
       />
       <CardText>{gloat.content}</CardText>
+      <CardActions>
+        {gloat.hasOwnProperty('admired') && <AdmireButton admired={gloat.admired} />}
+      </CardActions>
     </Card>
   </div>
 );

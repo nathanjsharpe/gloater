@@ -59,13 +59,17 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "lodash.get": "^4.4.2",
+    "lodash.trim": "^4.5.1",
     "material-ui": "^0.16.4",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^4.4.6",
     "react-router": "4.0.0-alpha.6",
     "react-tap-event-plugin": "^2.0.1",
+    "recompose": "^0.21.0",
     "redux": "^3.6.0",
+    "redux-form": "^6.3.2",
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.1.0"
   },
