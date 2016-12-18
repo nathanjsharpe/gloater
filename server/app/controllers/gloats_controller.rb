@@ -4,10 +4,16 @@ class GloatsController < ApplicationController
 
   # GET /gloats
   def index
+    @gloats = Gloat.includes(:user)
     if params[:sort] == "popularity"
-      @gloats = Gloat.includes(:user).order(admirers_count: :desc)
+      @gloats = @gloats.order(admirers_count: :desc)
     else
-      @gloats = Gloat.includes(:user).order(created_at: :desc)
+      @gloats = @gloats.order(created_at: :desc)
+    end
+
+    if params[:stalked]
+      authenticate!
+      @gloats = @gloats.where(user_id: current_user.stalked_user_ids)
     end
 
     render json: @gloats

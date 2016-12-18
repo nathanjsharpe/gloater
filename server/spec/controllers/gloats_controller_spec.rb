@@ -36,6 +36,29 @@ RSpec.describe GloatsController, type: :controller do
       get :index, params: { sort: 'popularity' }
       expect(body_as_json.map{|g| g["id"]}).to match([gloats[1].id, gloats[2].id, gloats[0].id])
     end
+
+    context "without valid token and stalked parameter true" do
+      before do
+        get :index, params: { stalked: true }
+      end
+
+      it_behaves_like "an unauthorized request"
+    end
+
+    context "with valid token and stalked parameter true" do
+      include_context "authenticated"
+
+      it "returns only gloats by users stalked by the current user" do
+        stalked_user = Fabricate(:user, stalkers: [current_user])
+        unstalked_user = Fabricate(:user)
+
+        Fabricate.times(3, :gloat, user: stalked_user)
+        Fabricate.times(2, :gloat, user: unstalked_user)
+
+        get :index, params: { stalked: true }
+        expect(body_as_json.length).to equal(3)
+      end
+    end
   end
 
   describe "GET #show" do
