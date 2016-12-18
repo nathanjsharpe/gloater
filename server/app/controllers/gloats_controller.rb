@@ -16,6 +16,11 @@ class GloatsController < ApplicationController
       @gloats = @gloats.where(user_id: current_user.stalked_user_ids)
     end
 
+    if params[:admired]
+      authenticate!
+      @gloats = @gloats.where(id: current_user.admired_gloat_ids)
+    end
+
     render json: @gloats
   end
 

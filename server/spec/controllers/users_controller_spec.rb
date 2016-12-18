@@ -16,23 +16,50 @@ RSpec.describe UsersController, type: :controller do
       expect(response.body).to be_valid_json
       expect(body_as_json.length).to eq(3)
     end
+
+    it "does not include gloats with users" do
+      expect(body_as_json.first).not_to include("gloats")
+    end
+
+    context "without valid token and stalked parameter true" do
+      before do
+        get :index, params: { stalked: true }
+      end
+
+      it_behaves_like "an unauthorized request"
+    end
+
+    context "with valid token and stalked parameter true" do
+      include_context "authenticated"
+
+      it "returns only users stalked by the current user" do
+        stalked_user = Fabricate(:user, stalkers: [current_user])
+        unstalked_user = Fabricate(:user)
+
+        get :index, params: { stalked: true }
+        expect(body_as_json.length).to equal(1)
+        expect(body_as_json.first["id"]).to equal(stalked_user.id)
+      end
+    end
   end
 
   describe "GET #show" do
-    before(:each) do
-      get :show, params: { id: user.id }
+    def do_request
+      get :show, params: { id: user.username }
     end
 
     let(:user) { Fabricate(:user) }
 
     it "returns http status success" do
+      do_request
       expect(response).to have_http_status(:success)
     end
 
     it "responds with JSON containing user" do
+      do_request
       expect(response.body).to be_valid_json
       expect(body_as_json).to include({
-        id: user.id,
+        username: user.username,
         email: user.email,
         city: user.city,
         state: user.state,
@@ -40,11 +67,20 @@ RSpec.describe UsersController, type: :controller do
       })
     end
 
+    it "includes user's gloats in response" do
+      Fabricate.times(2, :gloat, user: user)
+      do_request
+      expect(body_as_json).to include(:gloats)
+      expect(body_as_json[:gloats].length).to equal(2)
+    end
+
     it "does not include private fields in response object" do
+      do_request
       expect(body_as_json).to_not include(:password_digest, :updated_at)
     end
 
     it "does not include stalked for unauthenticated requests" do
+      do_request
       expect(body_as_json).to_not include(:stalked)
     end
 
@@ -57,7 +93,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       def do_request
-        get :show, params: { id: user.id }
+        get :show, params: { id: user.username }
       end
 
       it "indicates user is not stalked if current user is not stalking user" do

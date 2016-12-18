@@ -4,12 +4,17 @@ class UsersController < ApplicationController
   def index
     @users = User.all
 
+    if params[:stalked]
+      authenticate!
+      @users = @users.where(id: current_user.stalked_user_ids)
+    end
+
     render json: @users
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, serializer: UserCompleteSerializer
   end
 
   # POST /users
@@ -40,7 +45,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.includes(:gloats).find_by(username: params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

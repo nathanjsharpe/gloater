@@ -15,11 +15,14 @@ class ApiTokensController < ApplicationController
 =end
   def create
     credentials = User.new(user_params)
-    @user = User.find_by(email: credentials.email).try(:authenticate, credentials.password)
+    @user = User
+      .includes(:gloats)
+      .find_by(email: credentials.email)
+      .try(:authenticate, credentials.password)
 
     if @user
       @api_token = ApiToken.create(user: @user)
-      render json: @api_token, status: :created, location: @user
+      render json: @api_token, status: :created
     else
       render json: { error: "Invalid email or password." }, status: :unauthorized
     end

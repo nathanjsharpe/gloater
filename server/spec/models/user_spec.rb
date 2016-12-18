@@ -18,6 +18,7 @@ RSpec.describe User, type: :model do
   it { should have_and_belong_to_many :stalkers }
   it { should have_and_belong_to_many :stalked_users }
   it { should have_many :api_tokens }
+  it { should have_many :gloats }
 
   it "validates format of email address" do
     invalid_email_addresses = [

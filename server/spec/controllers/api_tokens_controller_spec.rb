@@ -21,6 +21,8 @@ RSpec.describe ApiTokensController, type: :controller do
       end
 
       it "responds with JSON containing user and api token" do
+        gloat = Fabricate(:gloat, user: user)
+
         do_request
         expect(response.body).to be_valid_json
         expect(body_as_json).to match({

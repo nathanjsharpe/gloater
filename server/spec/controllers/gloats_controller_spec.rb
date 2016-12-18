@@ -59,6 +59,26 @@ RSpec.describe GloatsController, type: :controller do
         expect(body_as_json.length).to equal(3)
       end
     end
+
+    context "without valid token and admired parameter true" do
+      before do
+        get :index, params: { admired: true }
+      end
+
+      it_behaves_like "an unauthorized request"
+    end
+
+    context "with valid token and admired parameter true" do
+      include_context "authenticated"
+
+      it "returns only gloats admired by the current user" do
+        Fabricate.times(3, :gloat, admirers: [current_user])
+        Fabricate.times(2, :gloat)
+
+        get :index, params: { admired: true }
+        expect(body_as_json.length).to equal(3)
+      end
+    end
   end
 
   describe "GET #show" do

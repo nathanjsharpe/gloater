@@ -16,6 +16,8 @@ class User < ApplicationRecord
     # Incredibly naive email regex that serves little purpose other than to say "I'm aware of format validation!"
     format: { with: /\A\S+@\S+\z/, message: "must be a valid email address" }
 
+  has_many :gloats
+
   has_many :api_tokens
   has_and_belongs_to_many :admired_gloats,
     class_name: 'Gloat',
