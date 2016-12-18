@@ -9,5 +9,5 @@ RSpec.describe Gloat, type: :model do
   it { should validate_length_of(:content).is_at_most(140) }
 
   it { should belong_to :user }
-  it { should have_and_belong_to_many :admirers}
+  it { should have_many(:admirers).through(:admires) }
 end

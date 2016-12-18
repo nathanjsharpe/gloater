@@ -1,6 +1,6 @@
 Fabricator(:user) do
   email           { Faker::Internet.email }
-  password_digest "password"
+  password        "password"
   city            { Faker::Address.city }
   state           { Faker::Address.state_abbr }
   profession      { Faker::Company.profession }

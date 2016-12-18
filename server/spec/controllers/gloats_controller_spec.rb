@@ -6,6 +6,36 @@ RSpec.describe GloatsController, type: :controller do
       get :index, params: {}
       expect(response).to have_http_status(:success)
     end
+
+    it "sorts by created_at desc if no sort provided" do
+      gloats = [
+        Fabricate(:gloat, created_at: Time.now - 1.hour),
+        Fabricate(:gloat, created_at: Time.now - 2.hours),
+        Fabricate(:gloat, created_at: Time.now - 3.hours)
+      ]
+
+      get :index, params: {}
+      expect(body_as_json.map{|g| g["id"]}).to match([gloats[0].id, gloats[1].id, gloats[2].id])
+    end
+
+    it "sorts by number of admirers if sort parameter is 'popularity'" do
+      gloats = [
+        Fabricate(:gloat),
+        Fabricate(:gloat),
+        Fabricate(:gloat)
+      ]
+
+      2.times do
+        gloats[1].admirers << Fabricate(:user)
+        gloats[1].save
+      end
+
+      gloats[2].admirers << Fabricate(:user)
+      gloats[2].save
+
+      get :index, params: { sort: 'popularity' }
+      expect(body_as_json.map{|g| g["id"]}).to match([gloats[1].id, gloats[2].id, gloats[0].id])
+    end
   end
 
   describe "GET #show" do
@@ -27,6 +57,7 @@ RSpec.describe GloatsController, type: :controller do
         expect(body_as_json).to include({
           id: gloat.id,
           content: gloat.content,
+          admirers_count: 0,
           user: {
             username: gloat.user.username,
             name: gloat.user.name,
