@@ -37,7 +37,8 @@ RSpec.describe ApiTokensController, type: :controller do
             profession: user.profession,
             created_at: be_kind_of(String),
             image: user.image,
-            username: user.username
+            username: user.username,
+            stalkers_count: 0,
           },
         })
       end

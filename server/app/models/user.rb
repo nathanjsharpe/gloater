@@ -19,22 +19,19 @@ class User < ApplicationRecord
   has_many :gloats
 
   has_many :api_tokens
-  has_and_belongs_to_many :admired_gloats,
-    class_name: 'Gloat',
-    join_table: :admires,
-    inverse_of: :admirers
 
-  # TODO: is there a way to define both in one statement?
-  has_and_belongs_to_many :stalkers,
-    class_name: 'User',
-    join_table: :stalks,
-    inverse_of: :stalked_users,
-    foreign_key: :stalked_id,
-    association_foreign_key: :stalker_id
-  has_and_belongs_to_many :stalked_users,
-    class_name: 'User',
-    join_table: :stalks,
-    inverse_of: :stalkers,
-    foreign_key: :stalker_id,
-    association_foreign_key: :stalked_id
+  has_many :admires
+  has_many :admired_gloats,
+    through: :admires,
+    source: :gloat
+
+  has_many :stalks, foreign_key: :stalker_id
+  has_many :stalkers,
+    through: :stalks,
+    source: :user,
+    dependent: :destroy
+  has_many :stalked_users,
+    through: :stalks,
+    source: :stalked,
+    dependent: :destroy
 end

@@ -4,6 +4,12 @@ class UsersController < ApplicationController
   def index
     @users = User.all
 
+    if params[:sort] == "popularity"
+      @users = @users.order(stalkers_count: :desc)
+    else
+      @users = @users.order(created_at: :desc)
+    end
+
     if params[:stalked]
       authenticate!
       @users = @users.where(id: current_user.stalked_user_ids)

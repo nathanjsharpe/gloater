@@ -3,22 +3,45 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
 
   describe "GET #index" do
-    before do
-      Fabricate.times(3, :user)
-      get :index, params: {}
-    end
-
     it "responds with http success" do
+      get :index
       expect(response).to have_http_status(:success)
     end
 
     it "responds with JSON containing users" do
+      Fabricate.times(3, :user)
+      get :index
       expect(response.body).to be_valid_json
       expect(body_as_json.length).to eq(3)
     end
 
     it "does not include gloats with users" do
+      Fabricate(:user)
+      get :index
       expect(body_as_json.first).not_to include("gloats")
+    end
+
+    it "sorts by number of stalkers if sort param is 'popularity'" do
+      users = [
+        Fabricate(:user),
+        Fabricate(:user),
+        Fabricate(:user)
+      ]
+
+      2.times do
+        u = Fabricate(:user)
+        u.stalked_users << users[1]
+        u.save
+      end
+
+      u = Fabricate(:user)
+      u.stalked_users << users[2]
+      u.save
+
+      get :index, params: { sort: 'popularity' }
+      user_ids = body_as_json.map{|u| u["id"]}
+      expect(user_ids[0]).to eq(users[1].id)
+      expect(user_ids[1]).to eq(users[2].id)
     end
 
     context "without valid token and stalked parameter true" do
@@ -33,7 +56,9 @@ RSpec.describe UsersController, type: :controller do
       include_context "authenticated"
 
       it "returns only users stalked by the current user" do
-        stalked_user = Fabricate(:user, stalkers: [current_user])
+        stalked_user = Fabricate(:user)
+        current_user.stalked_users << stalked_user
+        current_user.save
         unstalked_user = Fabricate(:user)
 
         get :index, params: { stalked: true }

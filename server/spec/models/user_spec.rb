@@ -14,9 +14,9 @@ RSpec.describe User, type: :model do
   it { should validate_length_of(:name).is_at_least(3) }
   it { should have_secure_password }
 
-  it { should have_and_belong_to_many :admired_gloats }
-  it { should have_and_belong_to_many :stalkers }
-  it { should have_and_belong_to_many :stalked_users }
+  it { should have_many(:admired_gloats).through(:admires) }
+  it { should have_many(:stalkers).through(:stalks) }
+  it { should have_many(:stalked_users).through(:stalks) }
   it { should have_many :api_tokens }
   it { should have_many :gloats }
 

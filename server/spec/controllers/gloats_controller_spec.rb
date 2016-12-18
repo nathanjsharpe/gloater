@@ -49,7 +49,9 @@ RSpec.describe GloatsController, type: :controller do
       include_context "authenticated"
 
       it "returns only gloats by users stalked by the current user" do
-        stalked_user = Fabricate(:user, stalkers: [current_user])
+        stalked_user = Fabricate(:user)
+        current_user.stalked_users << stalked_user
+        current_user.save
         unstalked_user = Fabricate(:user)
 
         Fabricate.times(3, :gloat, user: stalked_user)
