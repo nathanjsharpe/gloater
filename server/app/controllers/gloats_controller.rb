@@ -5,6 +5,7 @@ class GloatsController < ApplicationController
   # GET /gloats
   def index
     @gloats = Gloat.includes(:user)
+
     if params[:sort] == "popularity"
       @gloats = @gloats.order(admirers_count: :desc)
     else
