@@ -21,6 +21,16 @@ RSpec.describe UsersController, type: :controller do
       expect(body_as_json.first).not_to include("gloats")
     end
 
+    describe "pagination" do
+      before do
+        Fabricate.times(Kaminari.config.default_per_page + 1, :user)
+      end
+
+      subject { :index }
+
+      it_behaves_like "paginated"
+    end
+
     it "sorts by number of stalkers if sort param is 'popularity'" do
       users = [
         Fabricate(:user),

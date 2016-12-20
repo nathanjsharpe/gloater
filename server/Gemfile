@@ -22,6 +22,9 @@ gem 'active_model_serializers', '~> 0.10.0'
 # Pundit for authorization
 gem 'pundit', '~> 1.1.0'
 
+# kaminari for pagination
+gem 'kaminari', '~> 0.17.0'
+
 group :development, :test do
   gem 'byebug', platform: :mri
 

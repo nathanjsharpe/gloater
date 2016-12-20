@@ -1,4 +1,5 @@
 class Users::GloatsController < ApplicationController
+  include PaginatedResponse
   before_action :authenticate!, only: [:create, :update, :destroy]
   before_action :set_user
 
@@ -17,7 +18,7 @@ class Users::GloatsController < ApplicationController
       @gloats = @gloats.where(id: current_user.admired_gloat_ids)
     end
 
-    render json: @gloats
+    render json: @gloats.page(params[:page])
   end
 
   private

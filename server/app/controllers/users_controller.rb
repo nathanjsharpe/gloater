@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include PaginatedResponse
   before_action :set_user, only: [:show, :update, :destroy, :gloats]
 
   def index
@@ -15,7 +16,7 @@ class UsersController < ApplicationController
       @users = @users.where(id: current_user.stalked_user_ids)
     end
 
-    render json: @users
+    render json: @users.page(params[:page])
   end
 
   # GET /users/1

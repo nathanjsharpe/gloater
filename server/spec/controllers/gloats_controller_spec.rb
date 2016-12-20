@@ -37,6 +37,17 @@ RSpec.describe GloatsController, type: :controller do
       expect(body_as_json.map{|g| g["id"]}).to match([gloats[1].id, gloats[2].id, gloats[0].id])
     end
 
+    describe "pagination" do
+      before do
+        user = Fabricate(:user)
+        Fabricate.times(Kaminari.config.default_per_page + 1, :gloat, user: user)
+      end
+
+      subject { :index }
+
+      it_behaves_like "paginated"
+    end
+
     context "without valid token and stalked parameter true" do
       before do
         get :index, params: { stalked: true }
