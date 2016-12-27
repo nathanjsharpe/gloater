@@ -23,7 +23,7 @@ module PaginatedResponse
   def url_with_page(page_no)
     u = URI(request.url)
     u.query = Rack::Utils.parse_query(request.query_string)
-      .merge({ page: page_no })
+      .merge({ "page" => page_no })
       .to_query
     u
   end

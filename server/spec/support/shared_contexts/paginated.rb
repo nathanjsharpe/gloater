@@ -18,9 +18,10 @@ shared_context "paginated" do
     expect(response.headers["Link"]).to match(/<.+page=2> rel="next"/)
   end
 
-  it "returns link to previous page in 'Link' header" do
+  it "returns proper link to previous page in 'Link' header" do
     get subject, params: provided_params.merge({ page: 2 })
     expect(response.headers).to include("Link")
-    expect(response.headers["Link"]).to match(/<.+page=2> rel="prev"/)
+    expect(response.headers["Link"]).to match(/<.+page=1> rel="prev"/)
+    expect(response.headers["Link"]).not_to match(/<.+page=\d&page=\d> rel="prev"/)
   end
 end
