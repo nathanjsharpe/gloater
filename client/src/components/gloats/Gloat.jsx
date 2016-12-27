@@ -11,8 +11,11 @@ const Gloat = ({ gloat, style }) => (
         subtitle={`@${gloat.user.username}`}
         avatar={gloat.user.image || 'http://placehold.it/150x150'}
       />
-      <CardText>{gloat.content}</CardText>
+      <CardText>
+        {gloat.content}
+      </CardText>
       <CardActions>
+        <div>{gloat.admirers_count} Admired</div>
         {gloat.hasOwnProperty('admired') && <AdmireButton admired={gloat.admired} />}
       </CardActions>
     </Card>

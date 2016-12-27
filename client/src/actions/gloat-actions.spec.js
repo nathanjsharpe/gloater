@@ -29,20 +29,34 @@ const testGloats = [
   },
 ];
 
+const testTimestamp = Date.now();
+
+let clock;
+
 describe('gloat action creators', () => {
   beforeEach(() => {
-    fetchMock.get('*', testGloats);
+    fetchMock.get('*', {
+      body: testGloats,
+      headers: {
+        Link: '<http://localhost:3000/gloats?page=21> rel="next"; <http://localhost:3000/gloats?page=19> rel="prev"; <http://localhost:3000/gloats?page=40> rel="last"; <http://localhost:3000/gloats?page=1> rel="first"',
+      }
+    });
+    clock = sinon.useFakeTimers(testTimestamp);
   });
 
-  afterEach(() => fetchMock.restore());
+  afterEach(() => {
+    fetchMock.restore();
+    clock.restore();
+  });
 
   describe('fetchGloats', () => {
     it('issues a fetch gloats action', done => {
       const dispatch = sinon.spy();
-      actions.fetchGloats()(dispatch)
+      actions.fetchGloats('testfilter')(dispatch)
       .then(() => {
         expect(dispatch.calledWith({
-          type: FETCH_GLOATS_REQUEST
+          type: FETCH_GLOATS_REQUEST,
+          payload: { filter: 'testfilter' },
         })).to.be.true;
         done();
       })
@@ -61,14 +75,24 @@ describe('gloat action creators', () => {
 
     it('issues a receive gloats action when receiving a successful api response', done => {
       const dispatch = sinon.spy();
-      actions.fetchGloats()(dispatch)
+      actions.fetchGloats('testfilter')(dispatch)
       .then(() => {
-        expect(dispatch.calledWith({
+        const actualArg = dispatch.secondCall.args[0];
+        const expectedArg = {
           type: FETCH_GLOATS_SUCCESS,
           payload: {
+            filter: 'testfilter',
             gloats: testGloats,
+            links: {
+              first: 'http://localhost:3000/gloats?page=1',
+              last: 'http://localhost:3000/gloats?page=40',
+              prev: 'http://localhost:3000/gloats?page=19',
+              next: 'http://localhost:3000/gloats?page=21',
+            },
+            timestamp: testTimestamp,
           },
-        })).to.be.true;
+        };
+        expect(actualArg).to.deep.equal(expectedArg)
         done();
       })
       .catch(done);

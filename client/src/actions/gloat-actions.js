@@ -1,18 +1,23 @@
 import api from 'Util/api';
+import getGloatQueryParamsForFilter from 'Util/getGloatQueryParamsForFilter';
+import getPageLinks from 'Util/getPageLinks';
 
 import {
   FETCH_GLOATS_REQUEST,
   FETCH_GLOATS_SUCCESS,
 } from './action-types';
 
-const receiveGloats = gloats => ({
+const receiveGloats = (filter, gloats, links) => ({
   type: FETCH_GLOATS_SUCCESS,
-  payload: { gloats }
+  payload: { filter, gloats, links, timestamp: Date.now() }
 });
 
-export const fetchGloats = () => dispatch => {
-  dispatch({ type: FETCH_GLOATS_REQUEST });
+export const fetchGloats = filter => (dispatch, getState) => {
+  dispatch({
+    type: FETCH_GLOATS_REQUEST,
+    payload: { filter },
+  });
 
-  return api().gloats().get()
-  .then(gloats => dispatch(receiveGloats(gloats)));
+  return api().gloats(getGloatQueryParamsForFilter(filter)).get()
+  .then(({ body, response }) => dispatch(receiveGloats(filter, body, getPageLinks(response))));
 }

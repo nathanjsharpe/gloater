@@ -25,9 +25,9 @@ export const login = (email, password) => dispatch => {
   dispatch({ type: CREATE_API_TOKEN_REQUEST });
 
   return api().apiToken().post({ user: { email, password } })
-  .then(apiToken => dispatch({
+  .then(({ body }) => dispatch({
     type: CREATE_API_TOKEN_SUCCESS,
-    payload: apiToken,
+    payload: body,
   }))
   .catch(response => {
     dispatch({

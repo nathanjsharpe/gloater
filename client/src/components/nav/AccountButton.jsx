@@ -14,7 +14,6 @@ const AccountButton = ({ currentUser, login }) =>
   (
     <FlatButton
       containerElement={<Link to="/login" />}
-      linkButton={true}
       className="navbar-login-button"
       label="Login"
       style={{ color: '#fff' }}

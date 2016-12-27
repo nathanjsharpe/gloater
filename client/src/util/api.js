@@ -11,7 +11,7 @@ const sendRequest = (url, { method = 'GET', headers = {}, body, state = {} }) =>
     },
     body,
   })
-  .then(resp => resp.json());
+  .then(response => response.json().then(body => ({ body, response })));
 
 function api({
   baseUrl =  process.env.GLOATER_API_URL,
@@ -37,8 +37,16 @@ function api({
     return this;
   }
 
-  function gloats() {
+  function gloats(params = {}) {
     currentUrl = `${currentUrl}/gloats`;
+
+    if (Object.keys(params).length > 0) {
+      const queryParams = Object.keys(params)
+        .map(param => `${param}=${params[param]}`)
+        .join('&');
+      currentUrl = `${currentUrl}?${queryParams}`
+    }
+
     return this;
   }
 

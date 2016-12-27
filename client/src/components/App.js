@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import { BrowserRouter, Match, Miss } from 'react-router';
-import Home from './Home';
 import Login from './Login';
 import Gloats from 'Components/gloats/Gloats';
 import NotFound from './NotFound';

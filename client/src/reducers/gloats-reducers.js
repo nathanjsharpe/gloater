@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import createGloatFilterReducer from './createGloatFilterReducer';
 
 import {
   FETCH_GLOATS_SUCCESS,
@@ -20,6 +21,11 @@ const byId = (state = {}, action) => {
   }
 }
 
+const byFilter = combineReducers({
+  popular: createGloatFilterReducer('popular'),
+  recent: createGloatFilterReducer('recent'),
+});
+
 const loading = (state = false, action) => {
   switch(action.type) {
     case FETCH_GLOATS_REQUEST:
@@ -31,4 +37,4 @@ const loading = (state = false, action) => {
   }
 }
 
-export default combineReducers({ byId, loading });
+export default combineReducers({ byId, byFilter, loading });

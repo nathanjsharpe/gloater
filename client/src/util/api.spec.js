@@ -21,6 +21,10 @@ describe('api utility', () => {
     it('appends gloats path to current url', () => {
       expect(`${api({ baseUrl }).gloats()}`).to.equal(`${baseUrl}/gloats`);
     });
+
+    it('accepts query parameters and appends them to url', () => {
+      expect(`${api({ baseUrl }).gloats({ sort: 'popularity', stalked: true })}`).to.equal(`${baseUrl}/gloats?sort=popularity&stalked=true`)
+    });
   });
 
   describe('.gloat', () => {
@@ -77,23 +81,24 @@ describe('api utility', () => {
   describe('http methods', () => {
     afterEach(() => fetchMock.restore());
 
-    it('issues get requests to the constructed url and parses json response', done => {
-      fetchMock.get('*', [{ id: 123, content: 'testing' }]);
+    it('issues get requests to the constructed url, parses json response, and returns parsed body and response', done => {
+      fetchMock.get('*', { body: [{ id: 123, content: 'testing' }], headers: { Link: 'testing' } });
       api({ baseUrl }).gloats().get()
-      .then(resp => {
+      .then(({ body, response }) => {
         expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
-        expect(resp.length).to.equal(1);
+        expect(body.length).to.equal(1);
+        expect(response.headers.get('Link')).to.equal('testing');
         done();
       })
       .catch(done);
     });
 
-    it('issues post requests with data payload and parses the response', done => {
+    it('issues post requests with data payload, parses json response, and returns parsed body and response', done => {
       fetchMock.post('*', [{ id: 123, content: 'testing' }]);
       api({ baseUrl }).gloats().post({ content: 'testing'})
-      .then(resp => {
+      .then(({ body, response }) => {
         expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
-        expect(resp.length).to.equal(1);
+        expect(body.length).to.equal(1);
         done();
       })
       .catch(done);

@@ -5,9 +5,15 @@ import {
   FETCH_GLOATS_SUCCESS,
 } from 'Actions/action-types';
 
+const byFilterBefore = {
+  popular: { lastUpdated: null, pages: [], links: {}},
+  recent: { lastUpdated: null, pages: [], links: {}},
+};
+
 const stateBefore = (data = {}) => ({
   byId: {},
   loading: false,
+  byFilter: byFilterBefore,
   ...data,
 });
 
@@ -44,13 +50,13 @@ describe('gloatReducers', () => {
       loading: true,
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).to.contain.all.keys(expected);
   });
 
   it('sets loading to false when gloats are received', () => {
     const action = {
       type: FETCH_GLOATS_SUCCESS,
-      payload: { gloats: testGloats }
+      payload: { gloats: testGloats, filter: 'recent' }
     };
 
     const actual = gloatReducers(stateBefore({loading: true}), action);
@@ -61,7 +67,7 @@ describe('gloatReducers', () => {
   it('saves gloats by id when gloats are received', () => {
     const action = {
       type: FETCH_GLOATS_SUCCESS,
-      payload: { gloats: testGloats }
+      payload: { gloats: testGloats, filter: 'recent', timestamp: 1234 }
     };
 
     const actual = gloatReducers(stateBefore({loading: true}), action);
@@ -89,13 +95,13 @@ describe('gloatReducers', () => {
       }
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).to.contain.all.keys(expected);
   });
 
   it('appends gloats to existing gloats when gloats are received', () => {
     const firstAction = {
       type: FETCH_GLOATS_SUCCESS,
-      payload: { gloats: testGloats },
+      payload: { gloats: testGloats, filter: 'recent' },
     };
 
     const secondAction = {
@@ -149,6 +155,28 @@ describe('gloatReducers', () => {
       },
     };
 
-    expect(actual).to.deep.equal(expected);
+    expect(actual).to.contain.all.keys(expected);
+  });
+
+  it('adds page to specified filter', () => {
+    const action = {
+      type: FETCH_GLOATS_SUCCESS,
+      payload: {
+        gloats: testGloats,
+        filter: 'recent',
+        timestamp: 1234,
+        links: { first: 'firstpagelink' }
+      },
+    };
+
+    const actual = gloatReducers(stateBefore({loading: true}), action);
+
+    const expectedRecent = {
+      pages: [[1, 2]],
+      lastUpdated: 1234,
+      links: { first: 'firstpagelink' },
+    };
+
+    expect(actual.byFilter.recent).to.deep.equal(expectedRecent);
   })
 });
