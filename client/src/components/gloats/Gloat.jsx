@@ -9,7 +9,7 @@ const Gloat = ({ gloat, style }) => (
       <CardHeader
         title={gloat.user.name}
         subtitle={`@${gloat.user.username}`}
-        avatar={gloat.user.image || 'http://placehold.it/150x150'}
+        avatar={gloat.user.image}
       />
       <CardText>
         {gloat.content}

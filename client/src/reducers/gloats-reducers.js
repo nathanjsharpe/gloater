@@ -24,6 +24,8 @@ const byId = (state = {}, action) => {
 const byFilter = combineReducers({
   popular: createGloatFilterReducer('popular'),
   recent: createGloatFilterReducer('recent'),
+  stalked: createGloatFilterReducer('stalked'),
+  admired: createGloatFilterReducer('admired'),
 });
 
 const loading = (state = false, action) => {

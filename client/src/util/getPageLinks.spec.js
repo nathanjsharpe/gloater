@@ -9,8 +9,8 @@ const makeResponse = linkHeader => ({
 });
 
 describe('getPageLinks', () => {
-  it('returns an object with prev, next, first, and last keys', () => {
-    expect(getPageLinks(makeResponse(''))).to.include.keys('prev', 'next', 'first', 'last');
+  it('returns an empty object if page link header has no content', () => {
+    expect(getPageLinks(makeResponse(''))).to.deep.equal({});
   });
 
   it('extracts first link', () => {

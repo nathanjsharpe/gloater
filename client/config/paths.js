@@ -38,6 +38,7 @@ module.exports = {
   srcActions: resolveApp('src/actions'),
   srcComponents: resolveApp('src/components'),
   srcReducers: resolveApp('src/reducers'),
+  srcSelectors: resolveApp('src/selectors'),
   srcStore: resolveApp('src/store'),
   srcUtil: resolveApp('src/util'),
   nodePaths: nodePaths

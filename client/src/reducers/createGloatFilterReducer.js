@@ -1,9 +1,11 @@
+import uniq from 'lodash.uniq';
+
 import {
   FETCH_GLOATS_SUCCESS
 } from 'Actions/action-types';
 
 const initialState = {
-  pages: [],
+  ids: [],
   lastUpdated: null,
   links: {},
 }
@@ -14,10 +16,10 @@ const createGloatFilterReducer = filter => (state = initialState, action) => {
       case FETCH_GLOATS_SUCCESS:
         return {
           ...state,
-          pages: [
-            ...state.pages,
-            action.payload.gloats.map(g => g.id),
-          ],
+          ids: uniq([
+            ...state.ids,
+            ...action.payload.gloats.map(g => g.id),
+          ]),
           links: action.payload.links,
           lastUpdated: action.payload.timestamp,
         };

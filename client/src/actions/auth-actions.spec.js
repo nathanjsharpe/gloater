@@ -8,7 +8,7 @@ import {
   CREATE_API_TOKEN_SUCCESS,
 } from './action-types';
 
-const postSuccess = {
+const loginSuccess = {
   token: 'testapitoken',
   expires_at: '2018-01-16T01:56:47.156Z',
   user: {
@@ -24,13 +24,14 @@ const postSuccess = {
 };
 
 describe('auth action creators', () => {
-  beforeEach(() => {
-    fetchMock.post('*', postSuccess);
-  });
-
-  afterEach(() => fetchMock.restore());
 
   describe('login', () => {
+    beforeEach(() => {
+      fetchMock.post('*', loginSuccess);
+    });
+
+    afterEach(() => fetchMock.restore());
+
     it('issues a create api token request action', done => {
       const dispatch = sinon.spy();
       actions.login('user@example.com', 'password')(dispatch)

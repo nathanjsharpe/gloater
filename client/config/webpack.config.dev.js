@@ -79,6 +79,7 @@ module.exports = {
       Actions: paths.srcActions,
       Components: paths.srcComponents,
       Reducers: paths.srcReducers,
+      Selectors: paths.srcSelectors,
       Store: paths.srcStore,
       Util: paths.srcUtil,
     }

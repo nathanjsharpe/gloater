@@ -1,11 +1,11 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { Gloats } from './Gloats';
+import { GloatList } from './GloatList';
 import Gloat from './Gloat';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const testGloats = [
+const testGloatList = [
   {
     id: 1,
     content: 'Test content 1',
@@ -35,12 +35,21 @@ const testGloats = [
   },
 ];
 
-describe('<Gloats>', () => {
+describe('<GloatList>', () => {
+  it('renders a Gloat component for each gloat', () => {
+    const wrapper = shallow(
+      <GloatList
+        gloats={testGloatList}
+      />
+    );
+
+    expect(wrapper.find(Gloat).length).to.be.at.least(3);
+  });
 
   describe('when loading', () => {
     const render = () => shallow(
-      <Gloats
-        gloats={testGloats}
+      <GloatList
+        gloats={testGloatList}
         loading
       />
     );
@@ -50,27 +59,15 @@ describe('<Gloats>', () => {
 
       expect(wrapper.find(CircularProgress).length).to.be.at.least(1);
     });
-
-    it('does not render gloats', () => {
-      const wrapper = render();
-
-      expect(wrapper.find(Gloat)).to.have.length(0);
-    });
   });
 
   describe('when not loading', () => {
     const render = () => shallow(
-      <Gloats
-        gloats={testGloats}
+      <GloatList
+        gloats={testGloatList}
         loading={false}
       />
     );
-
-    it('renders a Gloat component for each gloat', () => {
-      const wrapper = render();
-
-      expect(wrapper.find(Gloat).length).to.be.at.least(3);
-    });
 
     it('does not render CircularProgress', () => {
       const wrapper = render();

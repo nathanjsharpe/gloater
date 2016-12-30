@@ -1,6 +1,7 @@
 import api from 'Util/api';
 import getGloatQueryParamsForFilter from 'Util/getGloatQueryParamsForFilter';
 import getPageLinks from 'Util/getPageLinks';
+import { getNextPageLinkByFilter } from 'Selectors/gloats';
 
 import {
   FETCH_GLOATS_REQUEST,
@@ -12,12 +13,15 @@ const receiveGloats = (filter, gloats, links) => ({
   payload: { filter, gloats, links, timestamp: Date.now() }
 });
 
-export const fetchGloats = filter => (dispatch, getState) => {
+export const fetchGloats = (filter, url) => (dispatch, getState) => {
   dispatch({
     type: FETCH_GLOATS_REQUEST,
     payload: { filter },
   });
 
-  return api().gloats(getGloatQueryParamsForFilter(filter)).get()
+  return (url ?
+    api(url).get() :
+    api().gloats(getGloatQueryParamsForFilter(filter)).get()
+  )
   .then(({ body, response }) => dispatch(receiveGloats(filter, body, getPageLinks(response))));
 }

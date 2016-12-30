@@ -13,8 +13,7 @@ const sendRequest = (url, { method = 'GET', headers = {}, body, state = {} }) =>
   })
   .then(response => response.json().then(body => ({ body, response })));
 
-function api({
-  baseUrl =  process.env.GLOATER_API_URL,
+function api(baseUrl =  process.env.GLOATER_API_URL, {
   state = store.getState(),
 } = {}) {
   let currentUrl = baseUrl;

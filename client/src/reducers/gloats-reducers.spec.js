@@ -6,8 +6,8 @@ import {
 } from 'Actions/action-types';
 
 const byFilterBefore = {
-  popular: { lastUpdated: null, pages: [], links: {}},
-  recent: { lastUpdated: null, pages: [], links: {}},
+  popular: { lastUpdated: null, ids: [], links: {}},
+  recent: { lastUpdated: null, ids: [], links: {}},
 };
 
 const stateBefore = (data = {}) => ({
@@ -158,25 +158,58 @@ describe('gloatReducers', () => {
     expect(actual).to.contain.all.keys(expected);
   });
 
-  it('adds page to specified filter', () => {
+  it('adds ids to specified filter', () => {
     const action = {
       type: FETCH_GLOATS_SUCCESS,
       payload: {
         gloats: testGloats,
         filter: 'recent',
         timestamp: 1234,
-        links: { first: 'firstpagelink' }
+        links: { first: 'firstpagelink', prev: 'prevpagelink' }
       },
     };
 
     const actual = gloatReducers(stateBefore({loading: true}), action);
 
     const expectedRecent = {
-      pages: [[1, 2]],
+      ids: [1, 2],
       lastUpdated: 1234,
-      links: { first: 'firstpagelink' },
+      links: { first: 'firstpagelink', prev: 'prevpagelink' },
     };
 
     expect(actual.byFilter.recent).to.deep.equal(expectedRecent);
-  })
+  });
+
+  it('clears duplicate ids when adding new page', () => {
+    const firstAction = {
+      type: FETCH_GLOATS_SUCCESS,
+      payload: {
+        gloats: testGloats,
+        filter: 'recent',
+        timestamp: 1234,
+        links: { first: 'firstpagelink', prev: 'prevpagelink' },
+      },
+    };
+
+    const secondAction = {
+      type: FETCH_GLOATS_SUCCESS,
+      payload: {
+        gloats: [testGloats[0]],
+        filter: 'recent',
+        timestamp: 12345,
+        links: { first: 'firstpagelink', next: 'nextpagelink' }
+      },
+    };
+
+    let actual = gloatReducers(stateBefore({loading: true}), firstAction);
+    actual = gloatReducers(actual, secondAction);
+
+    const expectedRecent = {
+      ids: [1, 2],
+      lastUpdated: 12345,
+      links: { first: 'firstpagelink', next: 'nextpagelink' },
+    };
+
+    expect(actual.byFilter.recent).to.deep.equal(expectedRecent);
+  });
 });

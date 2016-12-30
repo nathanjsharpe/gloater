@@ -11,13 +11,21 @@ const AccountButton = ({ currentUser, login }) =>
       {currentUser.username}
     </div>
   ) :
-  (
-    <FlatButton
-      containerElement={<Link to="/login" />}
-      className="navbar-login-button"
-      label="Login"
-      style={{ color: '#fff' }}
-    />
+ (
+    <div>
+      <FlatButton
+        containerElement={<Link to="/login" />}
+        className="navbar-login-button"
+        label="Login"
+        style={{ color: '#fff' }}
+      />
+      <FlatButton
+        containerElement={<Link to="/signup" />}
+        className="navbar-signup-button"
+        label="Sign Up"
+        style={{ color: '#fff' }}
+      />
+    </div>
   );
 
 export default AccountButton;

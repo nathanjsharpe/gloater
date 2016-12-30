@@ -7,7 +7,7 @@ const baseUrl = 'http://example.com';
 describe('api utility', () => {
   describe('.toString', () => {
     it('returns the url at its current state', () => {
-      expect(api({ baseUrl }).toString()).to.equal('http://example.com');
+      expect(api(baseUrl).toString()).to.equal('http://example.com');
     });
   });
 
@@ -19,40 +19,40 @@ describe('api utility', () => {
 
   describe('.gloats', () => {
     it('appends gloats path to current url', () => {
-      expect(`${api({ baseUrl }).gloats()}`).to.equal(`${baseUrl}/gloats`);
+      expect(`${api(baseUrl).gloats()}`).to.equal(`${baseUrl}/gloats`);
     });
 
     it('accepts query parameters and appends them to url', () => {
-      expect(`${api({ baseUrl }).gloats({ sort: 'popularity', stalked: true })}`).to.equal(`${baseUrl}/gloats?sort=popularity&stalked=true`)
+      expect(`${api(baseUrl).gloats({ sort: 'popularity', stalked: true })}`).to.equal(`${baseUrl}/gloats?sort=popularity&stalked=true`)
     });
   });
 
   describe('.gloat', () => {
     it('appends gloat path and id to current url', () => {
-      expect(`${api({ baseUrl }).gloat(123)}`).to.equal(`${baseUrl}/gloats/123`);
+      expect(`${api(baseUrl).gloat(123)}`).to.equal(`${baseUrl}/gloats/123`);
     });
   });
 
   describe('.apiToken', () => {
     it('appends api token path to current url', () => {
-      expect(`${api({ baseUrl }).apiToken()}`).to.equal(`${baseUrl}/api_token`);
+      expect(`${api(baseUrl).apiToken()}`).to.equal(`${baseUrl}/api_token`);
     });
   });
 
   describe('.users', () => {
     it('appends users path to url', () => {
-      expect(`${api({ baseUrl }).users()}`).to.equal(`${baseUrl}/users`);
+      expect(`${api(baseUrl).users()}`).to.equal(`${baseUrl}/users`);
     });
   });
 
   describe('.user', () => {
     it('appends user path and username to current url', () => {
-      expect(api({ baseUrl }).user('test_user').toString()).to.equal(`${baseUrl}/users/test_user`);
+      expect(api(baseUrl).user('test_user').toString()).to.equal(`${baseUrl}/users/test_user`);
     });
   });
 
   it('chains to create more complex urls', () => {
-    expect(api({ baseUrl }).user('test_user').gloats().toString()).to.equal(`${baseUrl}/users/test_user/gloats`);
+    expect(api(baseUrl).user('test_user').gloats().toString()).to.equal(`${baseUrl}/users/test_user/gloats`);
   });
 
   describe('authorization', () => {
@@ -66,7 +66,7 @@ describe('api utility', () => {
       };
 
       fetchMock.get('*', {});
-      api({ baseUrl, state }).gloats().get()
+      api(baseUrl, { state }).gloats().get()
       .then(resp => {
         expect(fetchMock.lastOptions().headers).to.deep.include({
           Authorization: 'testapitoken',
@@ -83,7 +83,7 @@ describe('api utility', () => {
 
     it('issues get requests to the constructed url, parses json response, and returns parsed body and response', done => {
       fetchMock.get('*', { body: [{ id: 123, content: 'testing' }], headers: { Link: 'testing' } });
-      api({ baseUrl }).gloats().get()
+      api(baseUrl).gloats().get()
       .then(({ body, response }) => {
         expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
         expect(body.length).to.equal(1);
@@ -95,7 +95,7 @@ describe('api utility', () => {
 
     it('issues post requests with data payload, parses json response, and returns parsed body and response', done => {
       fetchMock.post('*', [{ id: 123, content: 'testing' }]);
-      api({ baseUrl }).gloats().post({ content: 'testing'})
+      api(baseUrl).gloats().post({ content: 'testing'})
       .then(({ body, response }) => {
         expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
         expect(body.length).to.equal(1);

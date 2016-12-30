@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
@@ -52,6 +53,7 @@ const Login = ({ login, handleSubmit, submitting, error }) => (
               className="Login--button"
               primary
               label="Sign Up"
+              containerElement={<Link to="/signup" />}
               disabled={submitting}
             />
             <RaisedButton

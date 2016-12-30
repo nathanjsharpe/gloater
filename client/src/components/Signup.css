@@ -1,0 +1,29 @@
+.Signup {
+  display: flex;
+  justify-content: center;
+  animation: pop-in 0.3s;
+}
+
+.Signup--error {
+  animation: pop-in 0.3s;
+}
+
+.Signup--content {
+}
+
+.Signup--form {
+  padding: 1em;
+}
+
+.Signup--button {
+  margin-right: 1em;
+}
+
+.Signup--actions {
+  padding-top: 1em;
+}
+
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}

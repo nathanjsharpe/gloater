@@ -1,0 +1,4 @@
+.GloatList {
+  display: flex;
+  flex-wrap: wrap;
+}

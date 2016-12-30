@@ -9,8 +9,8 @@ describe('<AccountButton>', () => {
   describe('when no user is logged in', () => {
     const render = () => shallow(<AccountButton currentUser={null} />);
 
-    it('renders a login button', () => {
-      expect(render().find(FlatButton)).to.be.have.length(1);
+    it('renders login and sign up buttons', () => {
+      expect(render().find(FlatButton)).to.be.have.length(2);
     });
 
     it('does not render an avatar', () => {

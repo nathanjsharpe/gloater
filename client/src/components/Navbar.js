@@ -11,7 +11,6 @@ const Navbar = ({
   currentUser,
   toggleUserMenu,
   login,
-  router,
 }) => (
   <AppBar
     title={<Link to="/" className="Navbar--title-link">Gloater</Link>}

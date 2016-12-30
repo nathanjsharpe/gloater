@@ -5,6 +5,10 @@ const getLink = (linkHeader, rel) => {
 
 const getPageLinks = response => {
   const linkHeader = response.headers.get('Link');
+  if (!linkHeader) {
+    return {};
+  };
+
   return ['prev', 'next', 'last', 'first']
     .reduce((result, rel) => ({ ...result, [rel]: getLink(linkHeader, rel) }), {});
 };
