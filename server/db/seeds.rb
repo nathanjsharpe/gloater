@@ -10,8 +10,8 @@ randomUserUri = URI("https://randomuser.me/api/?results=#{NUM_USERS}")
 
 response = Net::HTTP.get(randomUserUri)
 user_data = JSON.parse(response, symbolize_names: true)[:results]
-users = User.create(user_data.map{|user| {
-  email: user[:email],
+users = User.create(user_data.map.with_index{|user, i| {
+  email: i == 0 ? 'user@example.com' : user[:email],
   password: 'password',
   password_confirmation: 'password',
   city: user[:location][:city],

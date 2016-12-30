@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  before_save :default_to_gravatar_image
+
   validates :username,
     presence: true,
     uniqueness: { case_sensitive: false },
@@ -34,4 +36,12 @@ class User < ApplicationRecord
     through: :stalks,
     source: :stalked,
     dependent: :destroy
+
+  def default_to_gravatar_image
+    self.image ||= self.gravatar_image_url
+  end
+
+  def gravatar_image_url
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(self.email.strip.downcase)}"
+  end
 end

@@ -5,13 +5,15 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  allow do
-    origins 'localhost'
+if !Rails.env.production?
+  Rails.application.config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      origins 'localhost'
 
-    resource '*',
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      expose: ['Link']
+      resource '*',
+        headers: :any,
+        methods: [:get, :post, :put, :patch, :delete, :options, :head],
+        expose: ['Link']
+    end
   end
 end
