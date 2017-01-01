@@ -14,7 +14,7 @@ class Gloats extends Component {
   }
 
   render() {
-    const { currentUser, params, fetchGloats } = this.props;
+    const { currentUser, params, fetchGloats, fetchUserGloats } = this.props;
 
     return (
       <Tabs
@@ -22,8 +22,13 @@ class Gloats extends Component {
         className="Gloats"
       >
         {currentUser && (
-          <Tab label="My Feed" value="my">
-            <h2>My Gloats</h2>
+          <Tab
+            label="My Feed"
+            value="current"
+            containerElement={<Link to="/gloats/current" />}
+            onActive={() => fetchUserGloats(currentUser)}
+          >
+            <GloatList filter="current" />
           </Tab>
         )}
         <Tab

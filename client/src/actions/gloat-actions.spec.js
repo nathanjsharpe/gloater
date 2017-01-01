@@ -97,5 +97,27 @@ describe('gloat action creators', () => {
       })
       .catch(done);
     });
+
+    it('issues request to a specific url if provided', done => {
+      const dispatch = sinon.spy();
+      actions.fetchGloats('testfilter', 'http://example.com/stuff')(dispatch)
+      .then(() => {
+        expect(fetchMock.lastUrl()).to.equal('http://example.com/stuff');
+        done()
+      })
+      .catch(done);
+    });
   });
+
+  describe('fetchUserGloats', () => {
+    beforeEach(() => sinon.stub(actions, 'fetchGloats'));
+    afterEach(() => actions.fetchGloats.restore());
+
+    it('calls fetch gloats with the user gloats url', () => {
+      const user = { username: 'exampleuser' };
+
+      actions.fetchUserGloats(user);
+      expect(actions.fetchGloats.calledWith(user, 'currentUser'));
+    });
+  })
 });

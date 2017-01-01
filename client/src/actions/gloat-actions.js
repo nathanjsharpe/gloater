@@ -1,7 +1,6 @@
 import api from 'Util/api';
 import getGloatQueryParamsForFilter from 'Util/getGloatQueryParamsForFilter';
 import getPageLinks from 'Util/getPageLinks';
-import { getNextPageLinkByFilter } from 'Selectors/gloats';
 
 import {
   FETCH_GLOATS_REQUEST,
@@ -25,3 +24,6 @@ export const fetchGloats = (filter, url) => (dispatch, getState) => {
   )
   .then(({ body, response }) => dispatch(receiveGloats(filter, body, getPageLinks(response))));
 }
+
+export const fetchUserGloats = (user, filter = 'current' ) =>
+  fetchGloats(filter, api().user(user.username).gloats().toString());

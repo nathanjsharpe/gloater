@@ -22,6 +22,7 @@ const byId = (state = {}, action) => {
 }
 
 const byFilter = combineReducers({
+  current: createGloatFilterReducer('current'),
   popular: createGloatFilterReducer('popular'),
   recent: createGloatFilterReducer('recent'),
   stalked: createGloatFilterReducer('stalked'),
