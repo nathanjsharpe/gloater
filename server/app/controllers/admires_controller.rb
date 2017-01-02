@@ -19,6 +19,9 @@ class AdmiresController < ApplicationController
   def destroy
     current_user.admired_gloats.delete(@gloat)
     current_user.save
+    @gloat.reload
+
+    render json: @gloat
   end
 
   private

@@ -43,7 +43,9 @@ RSpec.describe AdmiresController, type: :controller do
         do_request
         expect(response.body).to be_valid_json
         expect(body_as_json).to include({
-          id: gloat.id
+          id: gloat.id,
+          admired: true,
+          admirers_count: 1,
         })
       end
     end
@@ -65,6 +67,17 @@ RSpec.describe AdmiresController, type: :controller do
           do_request
         }.to change(current_user.reload.admired_gloats, :count).by(-1)
       end
+
+      it "returns gloat as json" do
+        do_request
+        expect(response.body).to be_valid_json
+        expect(body_as_json).to include({
+          id: gloat.id,
+          admired: false,
+          admirers_count: 0,
+        })
+      end
+
     end
 
   end

@@ -14,7 +14,6 @@ class ApplicationController < ActionController::API
     @current_user ||= ApiToken.find_by(token: request.headers["HTTP_AUTHORIZATION"]).try(:user)
   end
 
-
   private
 
   def unauthorized
