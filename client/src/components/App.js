@@ -19,7 +19,7 @@ const App = ({ router }) => (
         <Match exactly pattern="/gloats" component={Gloats} />
         <Match pattern="/gloats/:filter" component={Gloats} />
 
-        <Match pattern="/users" component={Users} />}
+        <Match pattern="/users" component={Users} />
         {/*<Match pattern="/users/stalked" component={StalkedUsers} />*/}
         {/*<Match pattern="/users/:username" component={UserFeed} />*/}
 

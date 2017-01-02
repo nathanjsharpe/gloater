@@ -2,11 +2,12 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import Gloat from './Gloat';
-import { Card, CardHeader } from 'material-ui/Card';
+import { Card, CardHeader, CardActions } from 'material-ui/Card';
 
 const testGloat = {
   id: 123,
   content: 'Test content',
+  admirers_count: 3,
   user: {
     username: 'username',
     name: 'Test User',
