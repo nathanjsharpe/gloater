@@ -3,6 +3,7 @@ import gloatReducers from './gloats-reducers';
 import {
   FETCH_GLOATS_REQUEST,
   FETCH_GLOATS_SUCCESS,
+  CREATE_GLOAT_SUCCESS,
 } from 'Actions/action-types';
 
 const byFilterBefore = {
@@ -97,6 +98,21 @@ describe('gloatReducers', () => {
 
     expect(actual).to.contain.all.keys(expected);
   });
+
+  it('adds successfully created gloats by id', () => {
+    const action = {
+      type: CREATE_GLOAT_SUCCESS,
+      payload: { gloat: testGloats[0] }
+    };
+    const actual = gloatReducers(stateBefore(), action);
+    const expected = {
+      byId: {
+        [testGloats[0].id]: testGloats[0],
+      },
+    };
+
+    expect(actual.byId[testGloats[0].id]).to.deep.equal(expected.byId[testGloats[0].id]);
+  })
 
   it('appends gloats to existing gloats when gloats are received', () => {
     const firstAction = {

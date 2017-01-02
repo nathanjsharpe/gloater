@@ -9,10 +9,14 @@ import TextInput from 'Components/forms/TextInput';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as authActions from 'Actions/auth-actions';
 import validate from 'Util/validation/validateLoginForm';
+import { Redirect } from 'react-router';
 import './Login.css';
 
-const Login = ({ login, handleSubmit, submitting, error }) => (
+const Login = ({ currentUser, location, login, handleSubmit, submitting, error }) => (
   <div className="Login">
+    {currentUser && (
+      <Redirect to={location.state || '/gloats'} />
+    )}
     <div className="Login--content">
       <Paper>
         <AppBar
@@ -68,7 +72,11 @@ const Login = ({ login, handleSubmit, submitting, error }) => (
   </div>
 );
 
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+});
+
 export default compose(
   reduxForm({ form: 'login', validate }),
-  connect(undefined, authActions)
+  connect(mapStateToProps, authActions)
 )(Login);

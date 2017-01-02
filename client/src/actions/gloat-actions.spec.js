@@ -29,6 +29,23 @@ const testGloats = [
   },
 ];
 
+const testGloat = {
+  content: "this is a test gloat",
+};
+
+const testGloatSuccess = {
+  id: 2001,
+  content: 'this is a test gloat alksd',
+  created_at: '2017-01-01T17:51:20.383Z',
+  updated_at: '2017-01-01T17:51:20.383Z',
+  admirers_count: 0,
+  user: {
+    username: 'crazywolf271',
+    name: 'Miriam Muñoz',
+    image: 'https://randomuser.me/api/portraits/med/women/24.jpg'
+  }
+};
+
 const testTimestamp = Date.now();
 
 let clock;
@@ -118,6 +135,58 @@ describe('gloat action creators', () => {
 
       actions.fetchUserGloats(user);
       expect(actions.fetchGloats.calledWith(user, 'currentUser'));
+    });
+  });
+
+  describe('createGloat', () => {
+    beforeEach(() => {
+      fetchMock.post('*', testGloatSuccess)
+    });
+
+    afterEach(() => {
+      fetchMock.restore();
+    });
+
+    it('disptaches a create gloat request action', done => {
+      const dispatch = sinon.spy();
+      actions.createGloat(testGloat)(dispatch)
+      .then(() => {
+        expect(dispatch.calledWith({
+          type: 'CREATE_GLOAT_REQUEST',
+          payload: { gloat: testGloat },
+        })).to.be.true;
+        done();
+      })
+      .catch(done);
+    });
+
+    it('sends a post request to the gloats endpoint with the new gloat as the body', done => {
+      const dispatch = sinon.spy();
+      actions.createGloat(testGloat)(dispatch)
+      .then(() => {
+        expect(fetchMock.lastUrl()).to.match(/gloats/);
+        expect(fetchMock.lastOptions()).to.deep.include({
+          method: 'POST',
+          body: JSON.stringify({ gloat: testGloat }),
+        });
+        done();
+      })
+      .catch(done);
+    });
+
+    it('disptaches a create gloat success action', done => {
+      const dispatch = sinon.spy();
+      actions.createGloat(testGloat)(dispatch)
+      .then(() => {
+        expect(dispatch.calledWith({
+          type: 'CREATE_GLOAT_SUCCESS',
+          payload: {
+            gloat: testGloatSuccess,
+          },
+        })).to.be.true;
+        done();
+      })
+      .catch(done);
     });
   })
 });

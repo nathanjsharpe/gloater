@@ -5,6 +5,8 @@ import getPageLinks from 'Util/getPageLinks';
 import {
   FETCH_GLOATS_REQUEST,
   FETCH_GLOATS_SUCCESS,
+  CREATE_GLOAT_REQUEST,
+  CREATE_GLOAT_SUCCESS,
 } from './action-types';
 
 const receiveGloats = (filter, gloats, links) => ({
@@ -12,7 +14,7 @@ const receiveGloats = (filter, gloats, links) => ({
   payload: { filter, gloats, links, timestamp: Date.now() }
 });
 
-export const fetchGloats = (filter, url) => (dispatch, getState) => {
+const fetchGloats = (filter, url) => (dispatch, getState) => {
   dispatch({
     type: FETCH_GLOATS_REQUEST,
     payload: { filter },
@@ -25,5 +27,24 @@ export const fetchGloats = (filter, url) => (dispatch, getState) => {
   .then(({ body, response }) => dispatch(receiveGloats(filter, body, getPageLinks(response))));
 }
 
-export const fetchUserGloats = (user, filter = 'current' ) =>
+const fetchUserGloats = (user, filter = 'current' ) =>
   fetchGloats(filter, api().user(user.username).gloats().toString());
+
+const createGloat = gloat => dispatch => {
+  dispatch({
+    type: CREATE_GLOAT_REQUEST,
+    payload: { gloat },
+  });
+
+  return api().gloats().post({ gloat })
+  .then(({ body, response }) => dispatch({
+    type: CREATE_GLOAT_SUCCESS,
+    payload: { gloat: body },
+  }));
+}
+
+export {
+  fetchGloats,
+  fetchUserGloats,
+  createGloat,
+};

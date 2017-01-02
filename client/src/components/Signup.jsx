@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router';
+import { Link, Redirect } from 'react-router';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
@@ -11,8 +11,11 @@ import * as authActions from 'Actions/auth-actions';
 import validate from 'Util/validation/validateSignupForm';
 import './Signup.css';
 
-const Signup = ({ Signup, handleSubmit, submitting, error }) => (
+const Signup = ({ currentUser, location, handleSubmit, submitting, error }) => (
   <div className="Signup">
+    {currentUser && (
+      <Redirect to={location.state || '/gloats'} />
+    )}
     <div className="Signup--content">
       <Paper>
         <AppBar
@@ -124,6 +127,10 @@ const Signup = ({ Signup, handleSubmit, submitting, error }) => (
     </div>
   </div>
 );
+
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+});
 
 export default compose(
   reduxForm({ form: 'signup', validate }),

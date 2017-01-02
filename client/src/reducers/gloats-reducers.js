@@ -4,6 +4,7 @@ import createGloatFilterReducer from './createGloatFilterReducer';
 import {
   FETCH_GLOATS_SUCCESS,
   FETCH_GLOATS_REQUEST,
+  CREATE_GLOAT_SUCCESS,
 } from 'Actions/action-types';
 
 const byId = (state = {}, action) => {
@@ -15,6 +16,11 @@ const byId = (state = {}, action) => {
           (newGloats, gloat) => ({ ...newGloats, [gloat.id]: gloat }),
           {}
         ),
+      };
+    case CREATE_GLOAT_SUCCESS:
+      return {
+        ...state,
+        [action.payload.gloat.id]: action.payload.gloat,
       };
     default:
       return state;

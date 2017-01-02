@@ -32,7 +32,9 @@ const App = ({ router }) => (
   </BrowserRouter>
 );
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  currentUser: state.auth.currentUser,
+});
 
 const mapDispatchToProps = dispatch => ({});
 
