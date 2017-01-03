@@ -188,5 +188,5 @@ describe('gloat action creators', () => {
       })
       .catch(done);
     });
-  })
+  });
 });

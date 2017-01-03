@@ -13,6 +13,11 @@ const sendRequest = (url, { method = 'GET', headers = {}, body, state = {} }) =>
   })
   .then(response => response.json().then(body => ({ body, response })));
 
+const getVal = (data, key) =>
+  typeof data === 'object' ?
+    data[key] :
+    data;
+
 function api(baseUrl =  process.env.GLOATER_API_URL, {
   state = store.getState(),
 } = {}) {
@@ -22,10 +27,12 @@ function api(baseUrl =  process.env.GLOATER_API_URL, {
     toString,
     gloats,
     gloat,
+    admire,
     users,
     user,
     apiToken,
     get: get,
+    delete: sendDelete,
     post,
   }
 
@@ -49,8 +56,13 @@ function api(baseUrl =  process.env.GLOATER_API_URL, {
     return this;
   }
 
-  function gloat(id) {
-    currentUrl = `${currentUrl}/gloats/${id}`;
+  function gloat(data) {
+    currentUrl = `${currentUrl}/gloats/${getVal(data, 'id')}`;
+    return this;
+  }
+
+  function admire() {
+    currentUrl = `${currentUrl}/admire`;
     return this;
   }
 
@@ -59,8 +71,8 @@ function api(baseUrl =  process.env.GLOATER_API_URL, {
     return this;
   }
 
-  function user(username) {
-    currentUrl = `${currentUrl}/users/${username}`;
+  function user(data) {
+    currentUrl = `${currentUrl}/users/${getVal(data, 'username')}`;
     return this;
   }
 
@@ -74,6 +86,10 @@ function api(baseUrl =  process.env.GLOATER_API_URL, {
       body: JSON.stringify(data),
       state,
     });
+  }
+
+  function sendDelete() {
+    return sendRequest(currentUrl, { method: 'DELETE', state });
   }
 }
 

@@ -4,17 +4,24 @@ import {
   FETCH_GLOATS_REQUEST,
   FETCH_GLOATS_SUCCESS,
   CREATE_GLOAT_SUCCESS,
+  CREATE_ADMIRE_SUCCESS,
+  DELETE_ADMIRE_SUCCESS,
 } from 'Actions/action-types';
 
-const byFilterBefore = {
-  popular: { lastUpdated: null, ids: [], links: {}},
-  recent: { lastUpdated: null, ids: [], links: {}},
-};
+const byFilterBefore = (ids = []) =>
+  ['popular', 'recent', 'admired'].reduce((a, b) => {
+    a[b] = {
+      lastUpdated: null,
+      links: {},
+      ids,
+    };
+    return a;
+  }, {});
 
 const stateBefore = (data = {}) => ({
   byId: {},
   loading: false,
-  byFilter: byFilterBefore,
+  byFilter: byFilterBefore(),
   ...data,
 });
 
@@ -37,7 +44,12 @@ const testGloats = [
       image: 'http://example.com/image2'
     }
   },
-]
+];
+
+const byIdBefore = (data = {}) => ({
+  '1': testGloats[0],
+  '2': testGloats[1],
+});
 
 describe('gloatReducers', () => {
   it('sets loading to true when gloats are fetched', () => {
@@ -115,12 +127,7 @@ describe('gloatReducers', () => {
   })
 
   it('appends gloats to existing gloats when gloats are received', () => {
-    const firstAction = {
-      type: FETCH_GLOATS_SUCCESS,
-      payload: { gloats: testGloats, filter: 'recent' },
-    };
-
-    const secondAction = {
+    const action = {
       type: FETCH_GLOATS_SUCCESS,
       payload: {
         gloats: [{
@@ -135,8 +142,12 @@ describe('gloatReducers', () => {
       },
     }
 
-    let actual = gloatReducers(stateBefore({loading: true}), firstAction);
-    actual = gloatReducers(actual, secondAction);
+    const state = stateBefore({
+      loading: true,
+      byId: byIdBefore(),
+    });
+
+    const actual = gloatReducers(state, action);
 
     const expected = {
       loading: false,
@@ -197,17 +208,7 @@ describe('gloatReducers', () => {
   });
 
   it('clears duplicate ids when adding new page', () => {
-    const firstAction = {
-      type: FETCH_GLOATS_SUCCESS,
-      payload: {
-        gloats: testGloats,
-        filter: 'recent',
-        timestamp: 1234,
-        links: { first: 'firstpagelink', prev: 'prevpagelink' },
-      },
-    };
-
-    const secondAction = {
+    const action = {
       type: FETCH_GLOATS_SUCCESS,
       payload: {
         gloats: [testGloats[0]],
@@ -217,8 +218,13 @@ describe('gloatReducers', () => {
       },
     };
 
-    let actual = gloatReducers(stateBefore({loading: true}), firstAction);
-    actual = gloatReducers(actual, secondAction);
+    const state = stateBefore({
+      loading: true,
+      byId: byIdBefore(),
+      byFilter: byFilterBefore([1, 2])
+    });
+
+    const actual = gloatReducers(state, action);
 
     const expectedRecent = {
       ids: [1, 2],
@@ -227,5 +233,64 @@ describe('gloatReducers', () => {
     };
 
     expect(actual.byFilter.recent).to.deep.equal(expectedRecent);
+  });
+
+  describe('handling CREATE_ADMIRE_SUCCESS action', () => {
+    it('replaces gloat in byId with gloat in payload', () =>{
+      const state = stateBefore({
+        byId: byIdBefore(),
+      });
+
+      const action = {
+        type: CREATE_ADMIRE_SUCCESS,
+        payload: { gloat: { ...testGloats[0], admired: true }},
+      };
+
+      const actual = gloatReducers(state, action);
+      const expectedById = {
+        '1': { ...testGloats[0], admired: true },
+        '2': testGloats[1],
+      };
+
+      expect(actual.byId).to.deep.equal(expectedById);
+    });
+  });
+
+  describe('handling DELETE_ADMIRE_SUCCESS action', () => {
+    it('replaces gloat in byId with gloat in payload', () =>{
+      const state = stateBefore({
+        byId: byIdBefore(),
+      });
+
+      const action = {
+        type: DELETE_ADMIRE_SUCCESS,
+        payload: { gloat: { ...testGloats[0], admired: false }},
+      };
+
+      const actual = gloatReducers(state, action);
+      const expectedById = {
+        '1': { ...testGloats[0], admired: false },
+        '2': testGloats[1],
+      };
+
+      expect(actual.byId).to.deep.equal(expectedById);
+    });
+
+    it('removes id from admired filter', () => {
+      const state = stateBefore({
+        byId: byIdBefore(),
+        byFilter: byFilterBefore([1, 2]),
+      });
+
+      const action = {
+        type: DELETE_ADMIRE_SUCCESS,
+        payload: { gloat: { ...testGloats[0], admired: false }},
+      };
+
+      const actual = gloatReducers(state, action);
+      const expectedAdmiredIds = [2];
+
+      expect(actual.byFilter.admired.ids).to.deep.equal(expectedAdmiredIds);
+    });
   });
 });

@@ -35,12 +35,15 @@ module.exports = {
   testsSetup: resolveApp('src/setupTests.js'),
   appNodeModules: resolveApp('node_modules'),
   ownNodeModules: resolveApp('node_modules'),
-  srcActions: resolveApp('src/actions'),
-  srcComponents: resolveApp('src/components'),
-  srcReducers: resolveApp('src/reducers'),
-  srcSelectors: resolveApp('src/selectors'),
-  srcStore: resolveApp('src/store'),
-  srcUtil: resolveApp('src/util'),
+  aliases: {
+    Actions: resolveApp('src/actions'),
+    Components: resolveApp('src/components'),
+    Reducers: resolveApp('src/reducers'),
+    Middleware: resolveApp('src/middleware'),
+    Selectors: resolveApp('src/selectors'),
+    Store: resolveApp('src/store'),
+    Util: resolveApp('src/util'),
+  },
   nodePaths: nodePaths
 };
 

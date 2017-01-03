@@ -15,11 +15,7 @@ const Gloat = ({ gloat, style }) => (
         {gloat.content}
       </CardText>
       <CardActions>
-        <AdmireButton
-          admired={gloat.admired}
-          numAdmirers={gloat.admirers_count}
-          disabled={!gloat.hasOwnProperty('admired')}
-        />
+        <AdmireButton gloat={gloat} />
       </CardActions>
     </Card>
   </div>

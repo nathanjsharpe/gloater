@@ -10,7 +10,7 @@ const initialState = {
   links: {},
 }
 
-const createGloatFilterReducer = filter => (state = initialState, action) => {
+const createGloatFilterReducer = (filter, extraActions) => (state = initialState, action) => {
   if (action.payload && action.payload.filter === filter) {
     switch(action.type) {
       case FETCH_GLOATS_SUCCESS:
@@ -26,6 +26,10 @@ const createGloatFilterReducer = filter => (state = initialState, action) => {
       default:
         return state;
     }
+  }
+
+  if (extraActions && extraActions.hasOwnProperty(action.type)) {
+    return extraActions[action.type](state, action);
   }
 
   return state;

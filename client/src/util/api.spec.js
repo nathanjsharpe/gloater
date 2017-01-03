@@ -28,10 +28,20 @@ describe('api utility', () => {
   });
 
   describe('.gloat', () => {
-    it('appends gloat path and id to current url', () => {
+    it('appends gloat path and id to current url if given id', () => {
       expect(`${api(baseUrl).gloat(123)}`).to.equal(`${baseUrl}/gloats/123`);
     });
+
+    it('appends gloat path and id to current url if given gloat', () => {
+      expect(`${api(baseUrl).gloat({ id: 123 })}`).to.equal(`${baseUrl}/gloats/123`);
+    });
   });
+
+  describe('.admire', () => {
+    it('appends admire path to current url', () => {
+      expect(`${api(baseUrl).gloat(123).admire()}`).to.equal(`${baseUrl}/gloats/123/admire`);
+    })
+  })
 
   describe('.apiToken', () => {
     it('appends api token path to current url', () => {
@@ -46,8 +56,12 @@ describe('api utility', () => {
   });
 
   describe('.user', () => {
-    it('appends user path and username to current url', () => {
+    it('appends user path and username to current url when given username', () => {
       expect(api(baseUrl).user('test_user').toString()).to.equal(`${baseUrl}/users/test_user`);
+    });
+
+    it('appends user path and username to current url when given user object', () => {
+      expect(api(baseUrl).user({ username: 'test_user' }).toString()).to.equal(`${baseUrl}/users/test_user`);
     });
   });
 
@@ -98,10 +112,23 @@ describe('api utility', () => {
       api(baseUrl).gloats().post({ content: 'testing'})
       .then(({ body, response }) => {
         expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats`);
+        expect(fetchMock.lastOptions()).to.have.property('method', 'POST');
         expect(body.length).to.equal(1);
         done();
       })
       .catch(done);
-    })
-  })
+    });
+
+    it('issues post requests with data payload, parses json response, and returns parsed body and response', done => {
+      fetchMock.delete('*', [{ id: 123, content: 'testing' }]);
+      api(baseUrl).gloat(123).delete()
+      .then(({ body, response }) => {
+        expect(fetchMock.lastUrl()).to.equal(`${baseUrl}/gloats/123`);
+        expect(fetchMock.lastOptions()).to.have.property('method', 'DELETE');
+        expect(body.length).to.equal(1);
+        done();
+      })
+      .catch(done);
+    });
+  });
 });

@@ -1,10 +1,13 @@
 import { combineReducers } from 'redux';
+import uniq from 'lodash.uniq';
 import createGloatFilterReducer from './createGloatFilterReducer';
 
 import {
   FETCH_GLOATS_SUCCESS,
   FETCH_GLOATS_REQUEST,
   CREATE_GLOAT_SUCCESS,
+  CREATE_ADMIRE_SUCCESS,
+  DELETE_ADMIRE_SUCCESS,
 } from 'Actions/action-types';
 
 const byId = (state = {}, action) => {
@@ -18,6 +21,8 @@ const byId = (state = {}, action) => {
         ),
       };
     case CREATE_GLOAT_SUCCESS:
+    case CREATE_ADMIRE_SUCCESS:
+    case DELETE_ADMIRE_SUCCESS:
       return {
         ...state,
         [action.payload.gloat.id]: action.payload.gloat,
@@ -32,7 +37,12 @@ const byFilter = combineReducers({
   popular: createGloatFilterReducer('popular'),
   recent: createGloatFilterReducer('recent'),
   stalked: createGloatFilterReducer('stalked'),
-  admired: createGloatFilterReducer('admired'),
+  admired: createGloatFilterReducer('admired', {
+    [DELETE_ADMIRE_SUCCESS]: (state, action) => ({
+      ...state,
+      ids: state.ids.filter(id => id !== action.payload.gloat.id),
+    }),
+  }),
 });
 
 const loading = (state = false, action) => {
