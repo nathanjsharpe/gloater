@@ -68,19 +68,5 @@ describe('<Gloat>', () => {
     it('passes gloat as prop to AdmireButton', () => {
       expect(wrapper.find(AdmireButton).prop('gloat')).to.deep.equal(testGloat());
     });
-
-    describe('if gloat does not have admired property', () => {
-      it('renders disabled AdmireButton', () => {
-        expect(wrapper.find(AdmireButton).props()).to.have.property('disabled', true);
-      });
-    });
-
-    describe('if gloat has admired property', () => {
-      beforeEach(() => wrapper = render({ gloat: testGloat({ admired: true }) }));
-
-      it('renders an enabled AdmireButton', () => {
-        expect(wrapper.find(AdmireButton).props()).to.have.property('disabled', false);
-      });
-    });
   });
 });

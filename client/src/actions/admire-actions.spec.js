@@ -17,9 +17,10 @@ const testGloat = data => ({
 
 describe('admire action creators', () => {
   describe('clickAdmire', () => {
-    it('returns an action with proper type', () => {
-      expect(actions.clickAdmire()).to.deep.equal({
+    it('returns an action with proper type and gloat in payload', () => {
+      expect(actions.clickAdmire(testGloat())).to.deep.equal({
         type: 'CLICK_ADMIRE',
+        payload: { gloat: testGloat() },
       });
     });
   });
