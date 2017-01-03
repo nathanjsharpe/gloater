@@ -5,10 +5,10 @@ RSpec.describe StalksController, type: :controller do
     include_context "authenticated"
 
     describe "POST #create" do
-      let(:stalkee) { Fabricate(:user) }
+      let(:stalkee) { Fabricate(:user, stalkers_count: 0) }
 
       def do_request
-        post :create, params: { user_id: stalkee.id }
+        post :create, params: { user_id: stalkee.username }
       end
 
       it "returns http success" do
@@ -26,7 +26,9 @@ RSpec.describe StalksController, type: :controller do
         do_request
         expect(response.body).to be_valid_json
         expect(body_as_json).to include({
-          id: stalkee.id
+          id: stalkee.id,
+          stalkers_count: 1,
+          stalked: true,
         })
       end
     end
@@ -40,7 +42,7 @@ RSpec.describe StalksController, type: :controller do
       end
 
       def do_request
-        delete :destroy, params: { user_id: stalkee.id }
+        delete :destroy, params: { user_id: stalkee.username }
       end
 
       it "returns http success" do
@@ -53,6 +55,16 @@ RSpec.describe StalksController, type: :controller do
           do_request
         }.to change(current_user.reload.stalked_users, :count).by(-1)
       end
+
+      it "returns stalked user as json" do
+        do_request
+        expect(response.body).to be_valid_json
+        expect(body_as_json).to include({
+          id: stalkee.id,
+          stalkers_count: 0,
+          stalked: false,
+        })
+      end
     end
 
   end
@@ -61,7 +73,7 @@ RSpec.describe StalksController, type: :controller do
     describe "POST #create" do
       let(:stalkee) { Fabricate(:user) }
 
-      before { post :create, params: { user_id: stalkee.id } }
+      before { post :create, params: { user_id: stalkee.username } }
 
       it_behaves_like "an unauthorized request"
     end
@@ -69,7 +81,7 @@ RSpec.describe StalksController, type: :controller do
     describe "DELETE #destroy" do
       let(:stalkee) { Fabricate(:user) }
 
-      before { delete :destroy, params: { user_id: stalkee.id } }
+      before { delete :destroy, params: { user_id: stalkee.username } }
 
       it_behaves_like "an unauthorized request"
     end

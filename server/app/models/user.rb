@@ -22,20 +22,19 @@ class User < ApplicationRecord
 
   has_many :api_tokens
 
-  has_many :admires
+  has_many :admires,
+    dependent: :destroy
   has_many :admired_gloats,
     through: :admires,
     source: :gloat
 
-  has_many :stalks, foreign_key: :stalker_id
+  has_many :stalks, foreign_key: :stalker_id, dependent: :destroy
   has_many :stalkers,
     through: :stalks,
-    source: :user,
-    dependent: :destroy
+    source: :user
   has_many :stalked_users,
     through: :stalks,
-    source: :stalked,
-    dependent: :destroy
+    source: :stalked
 
   def default_to_gravatar_image
     self.image ||= self.gravatar_image_url

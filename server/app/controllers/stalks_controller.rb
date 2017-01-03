@@ -10,16 +10,20 @@ class StalksController < ApplicationController
     current_user.stalked_users << @user
     current_user.save
     @user.reload
-    render json: @user
+
+    render json: @user, serializer: UserCompleteSerializer
   end
 
   def destroy
     current_user.stalked_users.delete(@user)
     current_user.save
+    @user.reload
+
+    render json: @user, serializer: UserCompleteSerializer
   end
 
   private
     def set_user
-      @user = User.find(params[:user_id])
+      @user = User.find_by(username: params[:user_id])
     end
 end
