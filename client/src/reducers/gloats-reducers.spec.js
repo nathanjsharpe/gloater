@@ -124,7 +124,19 @@ describe('gloatReducers', () => {
     };
 
     expect(actual.byId[testGloats[0].id]).to.deep.equal(expected.byId[testGloats[0].id]);
-  })
+  });
+
+  it('adds successfully created gloats to recent and current filters', () => {
+    const action = {
+      type: CREATE_GLOAT_SUCCESS,
+      payload: { gloat: testGloats[0] }
+    };
+    const actual = gloatReducers(stateBefore(), action);
+    const expectedIds = [testGloats[0].id];
+
+    expect(actual.byFilter.recent.ids).to.deep.equal(expectedIds);
+    expect(actual.byFilter.current.ids).to.deep.equal(expectedIds);
+  });
 
   it('appends gloats to existing gloats when gloats are received', () => {
     const action = {

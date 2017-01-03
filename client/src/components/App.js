@@ -5,14 +5,18 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 import Login from './Login';
 import Signup from './Signup';
 import Gloats from 'Components/gloats/Gloats';
+import NewGloatButton from 'Components/gloats/NewGloatButton';
+import NewGloatDialog from 'Components/gloats/NewGloatDialog';
 import Users from 'Components/users/Users';
 import NotFound from './NotFound';
 import Navbar from './Navbar';
 
-const App = ({ router }) => (
+const App = ({ router, currentUser }) => (
   <BrowserRouter>
     <div className="App">
       <Navbar />
+      {currentUser && <NewGloatButton />}
+      {currentUser && <NewGloatDialog />}
       <div className="App-content">
         <Match exactly pattern="/" component={Gloats} />
 

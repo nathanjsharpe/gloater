@@ -15,7 +15,7 @@ const validateLoginForm = values => {
     errors.password = 'Required';
   }
 
-  if (values.password != values.passwordConfirmation) {
+  if (values.password !== values.passwordConfirmation) {
     errors.passwordConfirmation = 'Must match password';
   }
 

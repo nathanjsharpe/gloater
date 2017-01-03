@@ -66,6 +66,18 @@ describe('gloat action creators', () => {
     clock.restore();
   });
 
+  describe('clickNewGloat', () => {
+    it('returns an action with appropriate type', () => {
+      expect(actions.clickNewGloat()).to.have.property('type', 'CLICK_NEW_GLOAT');
+    });
+  });
+
+  describe('closeNewGloat', () => {
+    it('returns an action with appropriate type', () => {
+      expect(actions.closeNewGloat()).to.have.property('type', 'CLOSE_NEW_GLOAT');
+    });
+  });
+
   describe('fetchGloats', () => {
     it('issues a fetch gloats action', done => {
       const dispatch = sinon.spy();

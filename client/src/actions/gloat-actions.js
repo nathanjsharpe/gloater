@@ -7,11 +7,16 @@ import {
   FETCH_GLOATS_SUCCESS,
   CREATE_GLOAT_REQUEST,
   CREATE_GLOAT_SUCCESS,
+  CLICK_NEW_GLOAT,
+  CLOSE_NEW_GLOAT,
 } from './action-types';
 
-const receiveGloats = (filter, gloats, links) => ({
-  type: FETCH_GLOATS_SUCCESS,
-  payload: { filter, gloats, links, timestamp: Date.now() }
+const clickNewGloat = () => ({
+  type: CLICK_NEW_GLOAT,
+});
+
+const closeNewGloat = () => ({
+  type: CLOSE_NEW_GLOAT,
 });
 
 const fetchGloats = (filter, url) => (dispatch, getState) => {
@@ -24,7 +29,15 @@ const fetchGloats = (filter, url) => (dispatch, getState) => {
     api(url).get() :
     api().gloats(getGloatQueryParamsForFilter(filter)).get()
   )
-  .then(({ body, response }) => dispatch(receiveGloats(filter, body, getPageLinks(response))));
+  .then(({ body, response }) => dispatch({
+    type: FETCH_GLOATS_SUCCESS,
+    payload: {
+      gloats: body,
+      links: getPageLinks(response),
+      timestamp: Date.now(),
+      filter,
+    },
+  }));
 }
 
 const fetchUserGloats = (user, filter = 'current' ) =>
@@ -44,6 +57,8 @@ const createGloat = gloat => dispatch => {
 }
 
 export {
+  clickNewGloat,
+  closeNewGloat,
   fetchGloats,
   fetchUserGloats,
   createGloat,

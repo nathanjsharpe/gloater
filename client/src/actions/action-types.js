@@ -1,4 +1,6 @@
 export const CLICK_ADMIRE = 'CLICK_ADMIRE';
+export const CLICK_NEW_GLOAT = 'CLICK_NEW_GLOAT';
+export const CLOSE_NEW_GLOAT = 'CLOSE_NEW_GLOAT';
 
 export const OPEN_USER_MENU = 'OPEN_USER_MENU';
 export const CLOSE_USER_MENU = 'CLOSE_USER_MENU';

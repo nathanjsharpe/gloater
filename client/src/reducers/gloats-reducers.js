@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import uniq from 'lodash.uniq';
 import createGloatFilterReducer from './createGloatFilterReducer';
 
 import {
@@ -32,10 +31,22 @@ const byId = (state = {}, action) => {
   }
 }
 
+const addNewGloatToFilter = (state, action) => ({
+  ...state,
+  ids: [
+    action.payload.gloat.id,
+    ...state.ids,
+  ]
+});
+
 const byFilter = combineReducers({
-  current: createGloatFilterReducer('current'),
+  current: createGloatFilterReducer('current', {
+    [CREATE_GLOAT_SUCCESS]: addNewGloatToFilter,
+  }),
   popular: createGloatFilterReducer('popular'),
-  recent: createGloatFilterReducer('recent'),
+  recent: createGloatFilterReducer('recent', {
+    [CREATE_GLOAT_SUCCESS]: addNewGloatToFilter,
+  }),
   stalked: createGloatFilterReducer('stalked'),
   admired: createGloatFilterReducer('admired', {
     [DELETE_ADMIRE_SUCCESS]: (state, action) => ({

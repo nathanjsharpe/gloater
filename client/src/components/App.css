@@ -1,3 +1,5 @@
 .App-content {
   padding: 1em;
+  z-index: 1;
+  position: relative;
 }

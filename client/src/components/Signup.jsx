@@ -134,5 +134,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   reduxForm({ form: 'signup', validate }),
-  connect(undefined, authActions)
+  connect(mapStateToProps, authActions)
 )(Signup);

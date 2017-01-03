@@ -13,7 +13,7 @@ const AdmireButton = ({ gloat, clickAdmire }) => (
       <ActionFavorite color={COLOR} /> :
       <ActionFavoriteBorder color={COLOR} />
     }
-    label={gloat.admirers_count}
+    label={gloat.admirers_count || '0'}
     labelStyle={{ color: COLOR }}
     disabled={!gloat.hasOwnProperty('admired')}
     onClick={() => gloat.hasOwnProperty('admired') && clickAdmire(gloat)}
