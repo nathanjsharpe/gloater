@@ -40,7 +40,13 @@ describe('api utility', () => {
   describe('.admire', () => {
     it('appends admire path to current url', () => {
       expect(`${api(baseUrl).gloat(123).admire()}`).to.equal(`${baseUrl}/gloats/123/admire`);
-    })
+    });
+  });
+
+  describe('.stalk', () => {
+    it('appends stalk path to current url', () => {
+      expect(`${api(baseUrl).user('testuser').stalk()}`).to.equal(`${baseUrl}/users/testuser/stalk`);
+    });
   })
 
   describe('.apiToken', () => {

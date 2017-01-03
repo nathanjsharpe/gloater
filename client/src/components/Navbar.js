@@ -13,6 +13,7 @@ const Navbar = ({
   login,
 }) => (
   <AppBar
+    showMenuIconButton={false}
     title={<Link to="/" className="Navbar--title-link">Gloater</Link>}
     iconElementRight={<AccountButton currentUser={currentUser} login={login} />}
   />

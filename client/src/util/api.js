@@ -31,6 +31,7 @@ function api(baseUrl =  process.env.GLOATER_API_URL, {
     users,
     user,
     apiToken,
+    stalk,
     get: get,
     delete: sendDelete,
     post,
@@ -63,6 +64,11 @@ function api(baseUrl =  process.env.GLOATER_API_URL, {
 
   function admire() {
     currentUrl = `${currentUrl}/admire`;
+    return this;
+  }
+
+  function stalk() {
+    currentUrl = `${currentUrl}/stalk`;
     return this;
   }
 

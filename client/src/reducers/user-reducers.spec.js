@@ -3,6 +3,8 @@ import userReducers from './user-reducers';
 import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
+  CREATE_STALK_SUCCESS,
+  DELETE_STALK_SUCCESS,
 } from 'Actions/action-types';
 
 const stateBefore = (data = {}) => ({
@@ -61,5 +63,33 @@ describe('userReducers', () => {
     const actual = userReducers(stateBefore({ loading: true }), action);
 
     expect(actual.user).to.deep.equal(testUser());
+  });
+
+  it('replaces user when stalk is successfully created', () => {
+    const action = {
+      type: CREATE_STALK_SUCCESS,
+      payload: { user: testUser({ stalked: true, stalkers_count: 1 }) }
+    };
+
+    const state = stateBefore({
+      user: testUser({ stalked: false, stalkers_count: 0 }),
+    });
+
+    const actual = userReducers(state, action);
+    expect(actual.user).to.deep.equal(testUser({ stalked: true, stalkers_count: 1 }));
+  });
+
+  it('replaces user when stalk is successfully deleted', () => {
+    const action = {
+      type: DELETE_STALK_SUCCESS,
+      payload: { user: testUser({ stalked: false, stalkers_count: 0 }) }
+    };
+
+    const state = stateBefore({
+      user: testUser({ stalked: true, stalkers_count: 1 }),
+    });
+
+    const actual = userReducers(state, action);
+    expect(actual.user).to.deep.equal(testUser({ stalked: false, stalkers_count: 0 }));
   });
 });
