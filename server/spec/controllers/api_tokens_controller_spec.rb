@@ -29,6 +29,7 @@ RSpec.describe ApiTokensController, type: :controller do
           token: be_kind_of(String),
           expires_at: be_kind_of(String),
           user: {
+            name: user.name,
             id: user.id,
             email: user.email,
             city: user.city,
