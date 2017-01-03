@@ -9,7 +9,7 @@ import {
 } from 'Actions/action-types';
 
 const byFilterBefore = (ids = []) =>
-  ['popular', 'recent', 'admired'].reduce((a, b) => {
+  ['popular', 'recent', 'admired', 'user'].reduce((a, b) => {
     a[b] = {
       lastUpdated: null,
       links: {},
@@ -218,6 +218,27 @@ describe('gloatReducers', () => {
 
     expect(actual.byFilter.recent).to.deep.equal(expectedRecent);
   });
+
+  it('replaces id for filter "user"', () => {
+    const action = {
+      type: FETCH_GLOATS_SUCCESS,
+      payload: {
+        gloats: [testGloats[0]],
+        filter: 'user',
+        timestamp: 1234,
+        links: {},
+      },
+    };
+
+    const state = stateBefore({
+      loading: true,
+      byFilter: byFilterBefore([1, 2]),
+    });
+
+    const actual = gloatReducers(state, action);
+
+    expect(actual.byFilter.user.ids).to.deep.equal([1]);
+  })
 
   it('clears duplicate ids when adding new page', () => {
     const action = {

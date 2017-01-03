@@ -1,4 +1,4 @@
-.Gloat {
+.UserCard {
   box-sizing: border-box;
   animation: pop-in 0.3s;
   animation-fill-mode: forwards;
@@ -7,41 +7,36 @@
   padding-bottom: 1em;
 }
 
-.Gloat--header a {
-  color: inherit;
-  text-decoration: none;
-}
-
 @media only screen and (min-width : 768px) {
-  .Gloat {
+  .UserCard {
     padding: 10px;
     flex-basis: 50%;
   }
 }
 
 @media only screen and (min-width : 1024px) {
-  .Gloat {
+  .UserCard {
     padding: 10px;
     flex-basis: 33%;
   }
 }
 
 @media only screen and (min-width : 1440px) {
-  .Gloat {
+  .UserCard {
     padding: 10px;
     flex-basis: 25%;
   }
 }
 
 @media only screen and (min-width : 1440px) {
-  .Gloat {
+  .UserCard {
     padding: 10px;
     flex-basis: 25%;
   }
 }
 
 @media only screen and (min-width : 1900px) {
-  .Gloat {
+  .UserCard {
     padding: 10px;
     flex-basis: 20%;
   }

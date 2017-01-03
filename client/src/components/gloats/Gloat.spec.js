@@ -47,14 +47,6 @@ describe('<Gloat>', () => {
       expect(wrapper.find(CardHeader)).to.have.length(1);
     })
 
-    it('passes username of the user prepended with "@" as subtitle to CardHeader', () => {
-      expect(wrapper.find(CardHeader).prop('subtitle')).to.equal('@username');
-    });
-
-    it('passes name of the user as title to CardHeader', () => {
-      expect(wrapper.find(CardHeader).prop('title')).to.equal('Test User');
-    });
-
     it('passes the image for the user as avatar to CardHeader', () => {
       expect(wrapper.find(CardHeader).prop('avatar')).to.equal('http://placehold.it/150x150');
     });

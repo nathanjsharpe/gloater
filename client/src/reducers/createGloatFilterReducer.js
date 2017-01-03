@@ -10,16 +10,18 @@ const initialState = {
   links: {},
 }
 
-const createGloatFilterReducer = (filter, extraActions) => (state = initialState, action) => {
+const createGloatFilterReducer = (filter, options) => (state = initialState, action) => {
   if (action.payload && action.payload.filter === filter) {
     switch(action.type) {
       case FETCH_GLOATS_SUCCESS:
         return {
           ...state,
-          ids: uniq([
-            ...state.ids,
-            ...action.payload.gloats.map(g => g.id),
-          ]),
+          ids: options && options.replaceIds ?
+            action.payload.gloats.map(g => g.id) :
+            uniq([
+              ...state.ids,
+              ...action.payload.gloats.map(g => g.id),
+            ]),
           links: action.payload.links,
           lastUpdated: action.payload.timestamp,
         };
@@ -28,8 +30,8 @@ const createGloatFilterReducer = (filter, extraActions) => (state = initialState
     }
   }
 
-  if (extraActions && extraActions.hasOwnProperty(action.type)) {
-    return extraActions[action.type](state, action);
+  if (options && options.hasOwnProperty(action.type)) {
+    return options[action.type](state, action);
   }
 
   return state;

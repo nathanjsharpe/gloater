@@ -8,6 +8,7 @@ import Gloats from 'Components/gloats/Gloats';
 import NewGloatButton from 'Components/gloats/NewGloatButton';
 import NewGloatDialog from 'Components/gloats/NewGloatDialog';
 import Users from 'Components/users/Users';
+import User from 'Components/users/User';
 import NotFound from './NotFound';
 import Navbar from './Navbar';
 
@@ -23,9 +24,9 @@ const App = ({ router, currentUser }) => (
         <Match exactly pattern="/gloats" component={Gloats} />
         <Match pattern="/gloats/:filter" component={Gloats} />
 
-        <Match pattern="/users" component={Users} />
+        <Match exactly pattern="/users" component={Users} />
         {/*<Match pattern="/users/stalked" component={StalkedUsers} />*/}
-        {/*<Match pattern="/users/:username" component={UserFeed} />*/}
+        {<Match pattern="/users/:username" component={User} />}
 
         <Match exactly pattern="/login" component={Login} />
         <Match exactly pattern="/signup" component={Signup} />

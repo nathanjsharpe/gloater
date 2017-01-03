@@ -5,20 +5,25 @@ import './Users.css';
 
 class Users extends Component {
   componentWillMount() {
-    const { fetchUsers, params } = this.props;
+    const { fetchUsers } = this.props;
 
-    fetchUsers(params.filter || 'recent');
+    fetchUsers();
   }
 
   render() {
+    const { users } = this.props;
+
     return (
-      <div />
+      <div>
+        {users}
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
   currentUser: state.auth.currentUser,
+  users: [],
 });
 
 export { Users };

@@ -1,0 +1,13 @@
+.User {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.User--profile {
+  flex-basis: 350px;
+}
+
+.User--gloats {
+  flex-basis: 350px;
+  flex-grow: 3;
+}

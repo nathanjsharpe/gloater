@@ -4,6 +4,8 @@ import {
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
   CREATE_USER_FAILURE,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
 } from './action-types';
 
 export const createUser = user => dispatch => {
@@ -24,4 +26,17 @@ export const createUser = user => dispatch => {
     });
     throw new SubmissionError({ _error: 'Something is messed up.' });
   });
+}
+
+export const fetchUser = username => dispatch => {
+  dispatch({
+    type: FETCH_USER_REQUEST,
+    payload: { username },
+  });
+
+  return api().user(username).get()
+  .then(({ body }) => dispatch({
+    type: FETCH_USER_SUCCESS,
+    payload: { user: body },
+  }));
 }

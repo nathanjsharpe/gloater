@@ -40,14 +40,15 @@ const addNewGloatToFilter = (state, action) => ({
 });
 
 const byFilter = combineReducers({
+  popular: createGloatFilterReducer('popular'),
+  stalked: createGloatFilterReducer('stalked'),
+  user: createGloatFilterReducer('user', { replaceIds: true }),
   current: createGloatFilterReducer('current', {
     [CREATE_GLOAT_SUCCESS]: addNewGloatToFilter,
   }),
-  popular: createGloatFilterReducer('popular'),
   recent: createGloatFilterReducer('recent', {
     [CREATE_GLOAT_SUCCESS]: addNewGloatToFilter,
   }),
-  stalked: createGloatFilterReducer('stalked'),
   admired: createGloatFilterReducer('admired', {
     [DELETE_ADMIRE_SUCCESS]: (state, action) => ({
       ...state,
