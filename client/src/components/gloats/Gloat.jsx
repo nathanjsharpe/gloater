@@ -15,7 +15,7 @@ const Gloat = ({ gloat, style }) => (
         subtitle={<Link to={`/users/${gloat.user.username}`}>@{gloat.user.username}</Link>}
         avatar={gloat.user.image}
       />
-      <CardText>
+      <CardText style={{paddingTop: '0px', paddingBottom: '0px'}}>
         <p>{gloat.content}</p>
         <p className="Gloat--timestamp">{moment(gloat.created_at).format('MMM D YYYY, h:mm a')}</p>
       </CardText>
