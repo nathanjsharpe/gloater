@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import sinon from 'sinon';
+import { login } from './auth-actions';
 import * as actions from './user-actions';
 
 const testUser = (data = {}) => ({
@@ -67,7 +68,7 @@ describe('user action creators', () => {
       .catch(done);
     });
 
-    it('issues a create user success action when receiving a successful api response', done => {
+    it('dispatches a create user success action and a login action when receiving a successful api response', done => {
       const dispatch = sinon.spy();
       actions.createUser(user)(dispatch)
       .then(() => {
@@ -76,7 +77,8 @@ describe('user action creators', () => {
           payload: {
             user: createUserSuccess,
           },
-        })).to.be.true;
+        })).to.equal(true);
+        expect(dispatch.lastCall.args[0]).to.be.a('function');
         done();
       })
       .catch(done);

@@ -1,5 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import api from 'Util/api';
+import { login } from './auth-actions';
 import {
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
@@ -15,10 +16,13 @@ export const createUser = user => dispatch => {
   });
 
   return api().users().post({ user })
-  .then(({ body }) => dispatch({
-    type: CREATE_USER_SUCCESS,
-    payload: { user: body }
-  }))
+  .then(({ body }) => {
+    dispatch({
+      type: CREATE_USER_SUCCESS,
+      payload: { user: body }
+    });
+    return dispatch(login(user.email, user.password));
+  })
   .catch(response => {
     dispatch({
       type: CREATE_USER_FAILURE,

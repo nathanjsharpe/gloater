@@ -9,6 +9,7 @@
 }
 
 .Signup--content {
+  max-width: 600px;
 }
 
 .Signup--form {

@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   color: #fff;
+  margin-right: 10px;
 }
 
 .AccountButton--user img {

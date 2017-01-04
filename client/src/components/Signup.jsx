@@ -7,11 +7,11 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import TextInput from 'Components/forms/TextInput';
 import RaisedButton from 'material-ui/RaisedButton';
-import * as authActions from 'Actions/auth-actions';
+import * as userActions from 'Actions/user-actions';
 import validate from 'Util/validation/validateSignupForm';
 import './Signup.css';
 
-const Signup = ({ currentUser, location, handleSubmit, submitting, error }) => (
+const Signup = ({ currentUser, location, handleSubmit, submitting, error, createUser }) => (
   <div className="Signup">
     {currentUser && (
       <Redirect to={location.state || '/gloats'} />
@@ -24,7 +24,7 @@ const Signup = ({ currentUser, location, handleSubmit, submitting, error }) => (
         />
         <form
           className="Signup--form"
-          onSubmit={handleSubmit(data => Signup(data.email, data.password))}
+          onSubmit={handleSubmit(data => createUser(data))}
         >
           {!submitting && error && <p className="Signup--error">{error}</p>}
           <Field
@@ -134,5 +134,5 @@ const mapStateToProps = state => ({
 
 export default compose(
   reduxForm({ form: 'signup', validate }),
-  connect(mapStateToProps, authActions)
+  connect(mapStateToProps, userActions)
 )(Signup);
