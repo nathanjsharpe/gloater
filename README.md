@@ -10,6 +10,12 @@ The client (in, you guessed it, `/client`) is a React application that uses redu
 
 More, but still not enough, information about each app can be found in their respective READMEs.
 
+Features that work (in twitter language): tweeting, following, favoriting, sign up, login.
+
+# Known issues
+
+User authorization tokens are not saved across refreshes. I was planning to save that bit of state to session storage and initialize the store with it on load, but I had to draw the line somewhere.
+
 # Running locally
 
 ## Server
@@ -48,7 +54,8 @@ In summary:
 ```
 cd client
 yarn run build
-cp build/* ../server/public/
+cp -r build/* ../server/public/
+cd ..
 git subtree push --prefix server heroku master
 ```
 

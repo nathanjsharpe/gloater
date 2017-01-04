@@ -16,7 +16,7 @@ class Gloats extends Component {
   render() {
     const { currentUser, params, fetchGloats, fetchUserGloats } = this.props;
 
-    if (!currentUser && ['current', 'popular', 'stalked'].includes(params.filter)) {
+    if (!currentUser && ['current', 'admired', 'stalked'].includes(params.filter)) {
       return <Redirect to="/gloats" />;
     }
 
