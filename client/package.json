@@ -78,9 +78,9 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "NODE_ENV=test GLOATER_API_URL=http://localhost:3000 node_modules/mocha/bin/mocha --compilers js:babel-core/register --require ignore-styles --recursive --reporter nyan 'src/**/*.spec.js'",
-    "test:watch": "NODE_ENV=test GLOATER_API_URL=http://localhost:3000 node_modules/mocha/bin/mocha --compilers js:babel-core/register --compilers jsx:babel-core/register --require ignore-styles --watch --recursive --reporter nyan 'src/**/*.spec.js*'",
+    "build": "GLOATER_API_URL=/api node scripts/build.js",
+    "test": "NODE_ENV=test GLOATER_API_URL=/api node_modules/mocha/bin/mocha --compilers js:babel-core/register --require ignore-styles --recursive --reporter nyan 'src/**/*.spec.js'",
+    "test:watch": "NODE_ENV=test GLOATER_API_URL=/api node_modules/mocha/bin/mocha --compilers js:babel-core/register --compilers jsx:babel-core/register --require ignore-styles --watch --recursive --reporter nyan 'src/**/*.spec.js*'",
     "test:e2e": "NODE_ENV=test node_modules/nightwatch/bin/nightwatch",
     "test:e2e:setup": "node_modules/selenium-standalone/bin/selenium-standalone install"
   },
