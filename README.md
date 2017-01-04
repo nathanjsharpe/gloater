@@ -1,4 +1,4 @@
-App is live (with seed data) on heroku at (https://gloater.herokuapp.com)[https://gloater.herokuapp.com/].
+App is live (with seed data) on heroku at [https://gloater.herokuapp.com](https://gloater.herokuapp.com/).
 
 You can create your own account or login with email `user@example.com` and password `password`.
 
@@ -14,7 +14,7 @@ Features that work (in twitter language): tweeting, following, favoriting, sign 
 
 # Known issues
 
-User authorization tokens are not saved across refreshes. I was planning to save that bit of state to session storage and initialize the store with it on load, but I had to draw the line somewhere.
+User authorization tokens are not saved across refreshes. So if you refresh, you'll have to sign in again. Gross, I know. I was planning to save that bit of state to session storage and initialize the store with it on load, but I had to draw the line somewhere.
 
 # Running locally
 
