@@ -81,4 +81,29 @@ RSpec.describe ApiTokensController, type: :controller do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    context "with valid api token" do
+      include_context "authenticated"
+
+      it "deletes api token" do
+        expect {
+          delete :destroy
+        }.to change(ApiToken, :count).by(-1)
+      end
+
+      it "returns success status" do
+        delete :destroy
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "without valid api token" do
+      before(:each) do
+        delete :destroy
+      end
+
+      it_behaves_like "an unauthorized request"
+    end
+  end
 end

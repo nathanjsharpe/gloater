@@ -28,6 +28,12 @@ class ApiTokensController < ApplicationController
     end
   end
 
+  def destroy
+    authenticate!
+    @api_token = ApiToken.find_by(token: request.headers["HTTP_AUTHORIZATION"])
+    @api_token.destroy
+  end
+
   private
     def user_params
       params.require(:user).permit(:email, :password)
