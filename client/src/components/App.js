@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import './App.css';
 import { BrowserRouter, Match, Miss } from 'react-router';
 import Login from './Login';
+import Logout from './Logout';
 import Signup from './Signup';
 import Gloats from 'Components/gloats/Gloats';
 import NewGloatButton from 'Components/gloats/NewGloatButton';
 import NewGloatDialog from 'Components/gloats/NewGloatDialog';
-import Users from 'Components/users/Users';
 import User from 'Components/users/User';
 import NotFound from './NotFound';
 import Navbar from './Navbar';
@@ -24,12 +24,11 @@ const App = ({ router, currentUser, newGloatOpen }) => (
         <Match exactly pattern="/gloats" component={Gloats} />
         <Match pattern="/gloats/:filter" component={Gloats} />
 
-        <Match exactly pattern="/users" component={Users} />
-        {/*<Match pattern="/users/stalked" component={StalkedUsers} />*/}
-        {<Match pattern="/users/:username" component={User} />}
+        <Match pattern="/users/:username" component={User} />
 
         <Match exactly pattern="/login" component={Login} />
         <Match exactly pattern="/signup" component={Signup} />
+        <Match exactly pattern="/logout" component={Logout} />
 
         <Miss component={NotFound} />
       </div>

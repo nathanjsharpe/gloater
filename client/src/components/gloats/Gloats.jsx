@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import * as gloatActions from 'Actions/gloat-actions';
@@ -15,6 +15,10 @@ class Gloats extends Component {
 
   render() {
     const { currentUser, params, fetchGloats, fetchUserGloats } = this.props;
+
+    if (!currentUser && ['current', 'popular', 'stalked'].includes(params.filter)) {
+      return <Redirect to="/gloats" />;
+    }
 
     return (
       <Tabs

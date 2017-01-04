@@ -3,11 +3,6 @@ import fetchMock from 'fetch-mock';
 import sinon from 'sinon';
 import * as actions from './auth-actions';
 
-import {
-  CREATE_API_TOKEN_REQUEST,
-  CREATE_API_TOKEN_SUCCESS,
-} from './action-types';
-
 const loginSuccess = {
   token: 'testapitoken',
   expires_at: '2018-01-16T01:56:47.156Z',
@@ -38,7 +33,7 @@ describe('auth action creators', () => {
       .then(() => {
         expect(dispatch.calledWith({
           type: 'CREATE_API_TOKEN_REQUEST'
-        })).to.be.true;
+        })).equal(true);
         done();
       })
       .catch(done);
@@ -58,12 +53,12 @@ describe('auth action creators', () => {
       .catch(done);
     });
 
-    it('issues a receive gloats action when receiving a successful api response', done => {
+    it('issues a create api token success action when receiving a successful api response', done => {
       const dispatch = sinon.spy();
       actions.login('user@example.com', 'password')(dispatch)
       .then(() => {
         expect(dispatch.calledWith({
-          type: CREATE_API_TOKEN_SUCCESS,
+          type: 'CREATE_API_TOKEN_SUCCESS',
           payload: {
             token: 'testapitoken',
             expires_at: '2018-01-16T01:56:47.156Z',
@@ -78,7 +73,50 @@ describe('auth action creators', () => {
               image: null,
             }
           },
-        })).to.be.true;
+        })).to.equal(true);
+        done();
+      })
+      .catch(done);
+    });
+  });
+
+  describe('logout', () => {
+    beforeEach(() => {
+      fetchMock.delete('*', {});
+    });
+
+    afterEach(() => fetchMock.restore());
+
+    it('issues a delete api token request action', done => {
+      const dispatch = sinon.spy();
+      actions.logout()(dispatch)
+      .then(() => {
+        expect(dispatch.calledWith({
+          type: 'DELETE_API_TOKEN_REQUEST'
+        })).to.equal(true);
+        done();
+      })
+      .catch(done);
+    });
+
+    it('makes an delete request to api token endpoint', done => {
+      const dispatch = sinon.spy();
+      actions.logout()(dispatch)
+      .then(() => {
+        expect(fetchMock.lastUrl()).to.match(/api_token/);
+        expect(fetchMock.lastOptions()).to.have.property('method', 'DELETE');
+        done();
+      })
+      .catch(done);
+    });
+
+    it('issues a receive gloats action when receiving a successful api response', done => {
+      const dispatch = sinon.spy();
+      actions.logout()(dispatch)
+      .then(() => {
+        expect(dispatch.calledWith({
+          type: 'DELETE_API_TOKEN_SUCCESS',
+        })).to.equal(true);
         done();
       })
       .catch(done);

@@ -11,7 +11,11 @@ const sendRequest = (url, { method = 'GET', headers = {}, body, state = {} }) =>
     },
     body,
   })
-  .then(response => response.json().then(body => ({ body, response })));
+  .then(response =>
+    response.json()
+    .then(body => ({ body, response }))
+    .catch(() => ({ response }))
+  );
 
 const getVal = (data, key) =>
   typeof data === 'object' ?
