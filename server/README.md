@@ -3,7 +3,7 @@
 ## Run it
 
 1. Install: `bundle install`
-2. Set up database: `bin/rails db:setup`
+2. Set up database: `bin/rails db:create db:migrate db:seed`
 3. Run server: `bin/rails s`
 4. Use it at `localhost:3000`
 
@@ -21,9 +21,4 @@ The database seeds use the `randomuser.me` api to create users. You get images t
 
 # Gems
 
-There are a few comments in the `Gemfile`, but I don't think I used anything too out of the ordinary.
-
-# TODO
-
-pagination - headers
-docker
+There are a few explanatory comments in the `Gemfile`, but there's nothing too strange here.

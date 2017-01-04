@@ -1,60 +1,22 @@
 Note: Run commands below use `yarn run`, but you can also use `npm run`.
 
+# Use it
 
-# Testing
+## Run it
 
-## Unit testing
+1. Install dependencies: `yarn`
+2. Run server: `yarn start`
+3. Use it at `localhost:3001`
 
-`yarn run test` runs tests with mocha.
+It expects the server to be available at `localhost:3000/api`.
 
-`yarn run test:watch` runs tests and watches for changes.
+## Test it
 
-## E2E testing
+1. Install dependencies: `yarn`
+2a. Run tests: `yarn test`
+2b. Run tests and watch for changes: `yarn run test:watch`
 
-`yarn run test:e2e:setup` to set up for e2e testing.
+## Browser test it
 
-`yarn run test:e2e` to run e2e tests using nightwatch.
-
-# Routes
-
-### Gloats
-
-- `/gloats`: current user's feed
-- `/gloats/recent`: gloats sorted by created_at desc
-- `/gloats/popular`: gloats sorted by admirer count
-- `/gloats/admired`: gloats admired by current user (requires user)
-- `/gloats/stalked`: gloats by users stalked by current user (requires user)
-
-### Users
-- `/users`: users sorted by stalker count
-- `/users/stalked`: users stalked by current user (requires user)
-- `/users/:username`: user information and gloats for user with :username
-
-### Auth
-- `/login`: login form (requires no user)
-- `/signup`: signup form (requires no user)
-
-TODO
-
-1. Add login
-  ✓ actions
-  ✓ reducers
-  ✓ login component
-  - popover component
-  ✓ add token to api requests
-2. Add signup
-  - /signup
-  ✓ redux form
-  - signup form component
-3. Add gloating
-  - ✓ Authorization
-  - /gloats
-4. Add users
-  - /users
-  - /users/[:username]
-5. Add admiring
-  - /gloats/admired
-6. Add stalking
-  - /gloats/stalked
-  - /users/stalked
-7. Docker
+1. Set up e2e testing: `yarn run test:e2e:setup`.
+2. Run tests: `yarn run test:e2e`.
