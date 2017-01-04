@@ -4,23 +4,6 @@ RSpec.describe AdmiresController, type: :controller do
   context "with valid token" do
     include_context "authenticated"
 
-    describe "GET #index" do
-      before(:each) do
-        Fabricate.times(3, :gloat, admirers: [current_user])
-        Fabricate.times(5, :gloat, admirers: [Fabricate(:user)])
-        get :index
-      end
-
-      it "returns http success" do
-        expect(response).to have_http_status(:success)
-      end
-
-      it "returns current user's admired gloats as json" do
-        expect(response.body).to be_valid_json
-        expect(body_as_json.length).to eq(3)
-      end
-    end
-
     describe "POST #create" do
       let(:gloat) { Fabricate(:gloat) }
 
@@ -83,12 +66,6 @@ RSpec.describe AdmiresController, type: :controller do
   end
 
   context "without valid token" do
-    describe "GET #index" do
-      before { get :index }
-
-      it_behaves_like "an unauthorized request"
-    end
-
     describe "POST #create" do
       let(:gloat) { Fabricate(:gloat) }
 

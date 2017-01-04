@@ -5,7 +5,7 @@ RSpec.describe "Gloats API", type: :request do
     it "returns all gloats" do
       Fabricate.times(3, :gloat)
 
-      get '/gloats'
+      get '/api/gloats'
 
       expect(response).to have_http_status(:success)
 
@@ -17,7 +17,7 @@ RSpec.describe "Gloats API", type: :request do
     it "returns returns a specific gloat" do
       gloat = Fabricate(:gloat)
 
-      get "/gloats/#{gloat.id}"
+      get "/api/gloats/#{gloat.id}"
 
       expect(response).to have_http_status(:success)
 
