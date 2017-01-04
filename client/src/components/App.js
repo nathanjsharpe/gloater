@@ -12,12 +12,12 @@ import User from 'Components/users/User';
 import NotFound from './NotFound';
 import Navbar from './Navbar';
 
-const App = ({ router, currentUser }) => (
+const App = ({ router, currentUser, newGloatOpen }) => (
   <BrowserRouter>
     <div className="App">
       <Navbar />
-      {currentUser && <NewGloatButton />}
-      {currentUser && <NewGloatDialog />}
+      {currentUser && !newGloatOpen && <NewGloatButton />}
+      {currentUser && newGloatOpen && <NewGloatDialog />}
       <div className="App-content">
         <Match exactly pattern="/" component={Gloats} />
 
@@ -39,6 +39,7 @@ const App = ({ router, currentUser }) => (
 
 const mapStateToProps = state => ({
   currentUser: state.auth.currentUser,
+  newGloatOpen: state.dialog.newGloatOpen,
 });
 
 const mapDispatchToProps = dispatch => ({});

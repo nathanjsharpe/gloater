@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import pure from 'recompose/pure';
 import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
+import moment from 'moment';
 import AdmireButton from 'Components/gloats/AdmireButton';
 import './Gloat.css';
 
@@ -14,7 +16,8 @@ const Gloat = ({ gloat, style }) => (
         avatar={gloat.user.image}
       />
       <CardText>
-        {gloat.content}
+        <p>{gloat.content}</p>
+        <p className="Gloat--timestamp">{moment(gloat.created_at).format('MMM D YYYY, h:mm a')}</p>
       </CardText>
       <CardActions>
         <AdmireButton gloat={gloat} />
@@ -23,4 +26,4 @@ const Gloat = ({ gloat, style }) => (
   </div>
 );
 
-export default Gloat;
+export default pure(Gloat);

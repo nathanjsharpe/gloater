@@ -22,7 +22,7 @@ const exampleGloats = [
   'I can instantiate an abstract class.',
   'I type with one finger. I point it at the keyboard and the keyboard does the rest.',
   'I can speak Braille.',
-  'I always knows the EXACT location of Carmen San Diego.',
+  'I always know the EXACT location of Carmen San Diego.',
   'We live in a constantly expanding universe. All of it is trying to get away from me.',
   'I can touch MC Hammer.',
   'There is no such thing as global warming. I was cold, so I turned the sun up.',

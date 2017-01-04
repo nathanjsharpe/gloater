@@ -7,6 +7,7 @@ import PinIcon from 'material-ui/svg-icons/maps/place';
 import WorkIcon from 'material-ui/svg-icons/action/work';
 import DateIcon from 'material-ui/svg-icons/action/date-range';
 import StalkButton from './StalkButton';
+import moment from 'moment';
 import './UserCard.css';
 
 const UserCard = ({ user, style }) => (
@@ -35,7 +36,7 @@ const UserCard = ({ user, style }) => (
             leftAvatar={<Avatar icon={<DateIcon />} />}
             disabled
           >
-            Member since {user.created_at}
+            Member since {moment(user.created_at).format('MMMM D, YYYY')}
           </ListItem>
         </List>
       </CardText>
