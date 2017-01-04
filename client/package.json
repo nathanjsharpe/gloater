@@ -1,6 +1,6 @@
 {
   "name": "gloater-client",
-  "homepage": "https://github.com/nathanjsharpe/gloater",
+  "homepage": "",
   "version": "0.1.0",
   "devDependencies": {
     "autoprefixer": "6.5.1",
@@ -78,7 +78,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "GLOATER_API_URL=/api node scripts/build.js",
+    "build": "REACT_APP_GLOATER_API_URL=/api node scripts/build.js",
     "test": "NODE_ENV=test GLOATER_API_URL=/api node_modules/mocha/bin/mocha --compilers js:babel-core/register --require ignore-styles --recursive --reporter nyan 'src/**/*.spec.js'",
     "test:watch": "NODE_ENV=test GLOATER_API_URL=/api node_modules/mocha/bin/mocha --compilers js:babel-core/register --compilers jsx:babel-core/register --require ignore-styles --watch --recursive --reporter nyan 'src/**/*.spec.js*'",
     "test:e2e": "NODE_ENV=test node_modules/nightwatch/bin/nightwatch",

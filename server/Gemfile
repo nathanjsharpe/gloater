@@ -25,12 +25,13 @@ gem 'pundit', '~> 1.1.0'
 # kaminari for pagination
 gem 'kaminari', '~> 0.17.0'
 
+# Random and less boring test and seed data
+gem 'faker', '~> 1.6.6'
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'bullet'
 
-  # Random and less boring test and seed data
-  gem 'faker', '~> 1.6.6'
 
   # After not setting up a new project for a while, factory girl has apparently been superseded by fabrication?
   # Fine by me, as fabrication is nice to use and gets the job done
